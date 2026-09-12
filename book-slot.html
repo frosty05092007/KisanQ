@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KisanQ - Book Procurement Slot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="logo-area">
+            <div class="logo">🌱</div>
+            <div class="logo-text">
+                <h1 data-i18n="appName">KisanQ</h1>
+                <p data-i18n="appTagline">Smart Procurement, Happy Farmers</p>
+            </div>
+        </a>
+        <div class="header-right">
+            <button class="language-btn" id="langToggleBtn" onclick="toggleLanguage()">🌐 हिन्दी</button>
+            <a href="profile.html" class="profile-btn" title="View Profile">
+                <div class="profile-pic">👨‍🌾</div>
+                <strong class="profile-name" data-i18n="farmerName">Rajesh Kumar</strong>
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-title-card">
+            <div>
+                <h2 data-i18n="slotTitle">Book Procurement & Storage Slot</h2>
+                <p data-i18n="slotDesc">Select your destination mandi warehouse and vehicle schedule.</p>
+            </div>
+            <a href="index.html" class="language-btn" data-i18n="backBtn">← Back</a>
+        </div>
+
+        <div class="form-card">
+            <form onsubmit="handleSlotFormSubmit(event)">
+                <div class="form-group">
+                    <label data-i18n="destLabel">Select Destination (Mandi / Warehouse)</label>
+                    <select id="destinationHub" required>
+                        <option value="Dadri Mandi Yard - Shed #4">Dadri Mandi Yard - Shed #4 (Open Yard)</option>
+                        <option value="Greater Noida Central Silo (FCI)">Greater Noida Central Silo (FCI Depot)</option>
+                        <option value="Dankaur APMC Cold Storage">Dankaur APMC Cold Storage (Warehouse B)</option>
+                        <option value="Surajpur Cooperative Godown">Surajpur Primary Cooperative Godown</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="cropLabel">Crop Type</label>
+                    <select id="cropType" required>
+                        <option value="Wheat (Lokwan)">Wheat (Lokwan)</option>
+                        <option value="Paddy (Common)">Paddy (Common)</option>
+                        <option value="Mustard">Mustard</option>
+                        <option value="Soybean">Soybean</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="weightLabel">Estimated Weight (Quintals)</label>
+                    <input type="number" id="cropWeight" placeholder="e.g. 45" required min="1">
+                </div>
+
+                <div class="form-group">
+                    <label data-i18n="vehicleLabel">Vehicle Number</label>
+                    <input type="text" id="vehicleNo" placeholder="UP-16-AB-1234" required>
+                </div>
+
+                <button type="submit" class="btn-primary" data-i18n="confirmSlotBtn">Confirm & Generate Token</button>
+            </form>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <div class="nav-icon">🏠</div>
+            <span data-i18n="navHome">Home</span>
+        </a>
+        <a href="book-slot.html" class="nav-item active">
+            <div class="nav-icon">📅</div>
+            <span data-i18n="navSlots">Slots</span>
+        </a>
+        <a href="qr.html" class="nav-item">
+            <div class="nav-icon">🎫</div>
+            <span data-i18n="navToken">Token</span>
+        </a>
+        <a href="payments.html" class="nav-item">
+            <div class="nav-icon">₹</div>
+            <span data-i18n="navPayments">Payments</span>
+        </a>
+        <a href="help.html" class="nav-item">
+            <div class="nav-icon">🎧</div>
+            <span data-i18n="navHelp">Help</span>
+        </a>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>

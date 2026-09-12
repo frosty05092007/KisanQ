@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KisanQ - Farmer Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="logo-area">
+            <div class="logo">🌱</div>
+            <div class="logo-text">
+                <h1 data-i18n="appName">KisanQ</h1>
+                <p data-i18n="appTagline">Smart Procurement, Happy Farmers</p>
+            </div>
+        </a>
+        
+        <div class="header-right">
+            <button class="language-btn" id="langToggleBtn" onclick="toggleLanguage()">🌐 हिन्दी</button>
+            <a href="profile.html" class="profile-btn" title="View Profile">
+                <div class="profile-pic">👨‍🌾</div>
+                <strong class="profile-name" data-i18n="farmerName">Rajesh Kumar</strong>
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="welcome">
+            <div class="welcome-left">
+                <div class="farmer-avatar">👨‍🌾</div>
+                <div>
+                    <h2><span data-i18n="welcomePrefix">Hello, </span><span data-i18n="farmerName">Rajesh Kumar</span> 👋</h2>
+                    <div class="location" id="displayLocation">📍 Dadri Procurement Centre, Greater Noida</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="token-card">
+            <div class="token-section">
+                <div class="token-label" data-i18n="yourToken">YOUR TOKEN</div>
+                <div class="token-number" id="tokenDisplay">KQ-1042</div>
+                <div class="token-time" data-i18n="issuedToday">✓ Issued Today • 09:15 AM</div>
+            </div>
+            <div class="token-section">
+                <div class="token-label" data-i18n="yourTurn">YOUR TURN</div>
+                <div class="turn-number">#5</div>
+                <div data-i18n="farmersAhead">5 farmers ahead of you</div>
+            </div>
+            <div class="token-section">
+                <div class="token-label" data-i18n="estimatedWait">ESTIMATED WAIT</div>
+                <div class="wait">~30 <span data-i18n="mins">min</span></div>
+                <div data-i18n="waitSuffix">Estimated waiting time</div>
+            </div>
+        </section>
+
+        <section class="quick-actions">
+            <a href="book-slot.html" class="action-card">
+                <div class="action-icon green-icon">📅</div>
+                <div class="action-text">
+                    <h3 data-i18n="bookActionTitle">Book New Slot</h3>
+                    <p data-i18n="bookActionSub">Choose storage, date & time</p>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+            <a href="track.html" class="action-card">
+                <div class="action-icon blue-icon">👥</div>
+                <div class="action-text">
+                    <h3 data-i18n="trackActionTitle">Track My Queue</h3>
+                    <p data-i18n="trackActionSub">Live gate status</p>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+            <a href="qr.html" class="action-card">
+                <div class="action-icon orange-icon">▦</div>
+                <div class="action-text">
+                    <h3 data-i18n="qrActionTitle">Show My QR</h3>
+                    <p data-i18n="qrActionSub">At procurement gate</p>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+        </section>
+
+        <section class="lower">
+            <div class="card">
+                <h3 data-i18n="scheduleHeading">📅 Today's Schedule</h3>
+                <div class="schedule-item">
+                    <div class="timeline"></div>
+                    <div class="schedule-text">
+                        <small>09:15 AM</small>
+                        <strong data-i18n="step1">Token Issued</strong>
+                    </div>
+                </div>
+                <div class="schedule-item">
+                    <div class="timeline"></div>
+                    <div class="schedule-text">
+                        <small>~10:00 AM</small>
+                        <strong data-i18n="step2">Expected Turn</strong>
+                        <small data-i18n="step2Sub">Proceed to Weighbridge 2</small>
+                    </div>
+                </div>
+                <div class="schedule-item">
+                    <div class="timeline"></div>
+                    <div class="schedule-text">
+                        <small>After Weighing</small>
+                        <strong data-i18n="step3">Quality & Moisture Check</strong>
+                    </div>
+                </div>
+                <div class="schedule-item">
+                    <div class="timeline"></div>
+                    <div class="schedule-text">
+                        <small>Final Step</small>
+                        <strong data-i18n="step4">Direct Bank Transfer (DBT)</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="card">
+                    <h3 data-i18n="paymentHeading">💰 Payment Status</h3>
+                    <div class="payment">
+                        <div class="payment-status" data-i18n="paymentStatusTxt">✓ ₹ 84,250</div>
+                        <p style="margin-top:5px; font-size:14px; color:#2e633d;" data-i18n="paymentNote">
+                            Status: Processing via DBT (Ref: KQ-PAY-883)
+                        </p>
+                    </div>
+                    <a href="payments.html" class="btn-primary" data-i18n="viewDetailsBtn">View Complete Breakdown →</a>
+                </div>
+                <br>
+                <div class="notice">
+                    <h4 data-i18n="noticeHeading">📢 Procurement Notice</h4>
+                    <p data-i18n="noticeBody">Acceptable moisture content for Paddy is capped at 17%. Produce exceeding this will require re-drying before storage check-in.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item active">
+            <div class="nav-icon">🏠</div>
+            <span data-i18n="navHome">Home</span>
+        </a>
+        <a href="book-slot.html" class="nav-item">
+            <div class="nav-icon">📅</div>
+            <span data-i18n="navSlots">Slots</span>
+        </a>
+        <a href="qr.html" class="nav-item">
+            <div class="nav-icon">🎫</div>
+            <span data-i18n="navToken">Token</span>
+        </a>
+        <a href="payments.html" class="nav-item">
+            <div class="nav-icon">₹</div>
+            <span data-i18n="navPayments">Payments</span>
+        </a>
+        <a href="help.html" class="nav-item">
+            <div class="nav-icon">🎧</div>
+            <span data-i18n="navHelp">Help</span>
+        </a>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>

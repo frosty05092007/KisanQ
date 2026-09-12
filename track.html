@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KisanQ - Track Live Queue</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="logo-area">
+            <div class="logo">🌱</div>
+            <div class="logo-text">
+                <h1 data-i18n="appName">KisanQ</h1>
+                <p data-i18n="appTagline">Smart Procurement, Happy Farmers</p>
+            </div>
+        </a>
+        <div class="header-right">
+            <button class="language-btn" id="langToggleBtn" onclick="toggleLanguage()">🌐 हिन्दी</button>
+            <a href="profile.html" class="profile-btn" title="View Profile">
+                <div class="profile-pic">👨‍🌾</div>
+                <strong class="profile-name" data-i18n="farmerName">Rajesh Kumar</strong>
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-title-card">
+            <div>
+                <h2 data-i18n="trackTitle">Live Gate & Queue Tracker</h2>
+                <p data-i18n="trackDesc">Real-time updates directly from mandi weighbridges.</p>
+            </div>
+            <a href="index.html" class="language-btn" data-i18n="backBtn">← Back</a>
+        </div>
+
+        <div class="card" style="max-width:850px; margin:0 auto;">
+            <table class="data-table">
+                <tr>
+                    <td data-i18n="colCenter">Procurement Center</td>
+                    <td><strong>Dadri Mandi Yard - Shed #4</strong></td>
+                </tr>
+                <tr>
+                    <td data-i18n="colServing">Now Serving</td>
+                    <td><strong style="color:#08752d; font-size:20px;">KQ-1037</strong></td>
+                </tr>
+                <tr>
+                    <td data-i18n="colUserToken">Your Token</td>
+                    <td><strong id="tokenDisplay" style="color:#119542; font-size:20px;">KQ-1042</strong></td>
+                </tr>
+                <tr>
+                    <td data-i18n="yourTurn">YOUR TURN</td>
+                    <td><strong>#5 in Line</strong></td>
+                </tr>
+                <tr>
+                    <td data-i18n="colBridges">Active Weighbridges</td>
+                    <td>3 Operational</td>
+                </tr>
+                <tr>
+                    <td data-i18n="colTurnaround">Avg. Turnaround</td>
+                    <td>6 mins / tractor</td>
+                </tr>
+            </table>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <div class="nav-icon">🏠</div>
+            <span data-i18n="navHome">Home</span>
+        </a>
+        <a href="book-slot.html" class="nav-item">
+            <div class="nav-icon">📅</div>
+            <span data-i18n="navSlots">Slots</span>
+        </a>s
+        <a href="qr.html" class="nav-item">
+            <div class="nav-icon">🎫</div>
+            <span data-i18n="navToken">Token</span>
+        </a>
+        <a href="payments.html" class="nav-item">
+            <div class="nav-icon">₹</div>
+            <span data-i18n="navPayments">Payments</span>
+        </a>
+        <a href="help.html" class="nav-item">
+            <div class="nav-icon">🎧</div>
+            <span data-i18n="navHelp">Help</span>
+        </a>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>

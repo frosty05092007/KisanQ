@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KisanQ - Digital Gate Pass</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <a href="index.html" class="logo-area">
+            <div class="logo">🌱</div>
+            <div class="logo-text">
+                <h1 data-i18n="appName">KisanQ</h1>
+                <p data-i18n="appTagline">Smart Procurement, Happy Farmers</p>
+            </div>
+        </a>
+        <div class="header-right">
+            <button class="language-btn" id="langToggleBtn" onclick="toggleLanguage()">🌐 हिन्दी</button>
+            <a href="profile.html" class="profile-btn" title="View Profile">
+                <div class="profile-pic">👨‍🌾</div>
+                <strong class="profile-name" data-i18n="farmerName">Rajesh Kumar</strong>
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-title-card">
+            <div>
+                <h2 data-i18n="qrTitle">Procurement Gate Pass</h2>
+                <p data-i18n="qrDesc">Display this pass to the gate operator upon tractor arrival.</p>
+            </div>
+            <a href="index.html" class="language-btn" data-i18n="backBtn">← Back</a>
+        </div>
+
+        <div class="form-card" style="text-align:center;">
+            <div style="font-size:24px; font-weight:bold; color:#08752d;" id="qrTokenLabel">KQ-1042</div>
+            <div class="qr-display"></div>
+            <p style="color:#68736b; font-size:14px;" data-i18n="qrScanHelp">
+                Scan at weighbridge terminal to initiate unladen weighing.
+            </p>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <div class="nav-icon">🏠</div>
+            <span data-i18n="navHome">Home</span>
+        </a>
+        <a href="book-slot.html" class="nav-item">
+            <div class="nav-icon">📅</div>
+            <span data-i18n="navSlots">Slots</span>
+        </a>
+        <a href="qr.html" class="nav-item active">
+            <div class="nav-icon">🎫</div>
+            <span data-i18n="navToken">Token</span>
+        </a>
+        <a href="payments.html" class="nav-item">
+            <div class="nav-icon">₹</div>
+            <span data-i18n="navPayments">Payments</span>
+        </a>
+        <a href="help.html" class="nav-item">
+            <div class="nav-icon">🎧</div>
+            <span data-i18n="navHelp">Help</span>
+        </a>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>
