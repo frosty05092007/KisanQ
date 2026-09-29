@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track My Queue - KisanQ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#1b4d3e',
+            'brand-dark': '#143b2f',
+            'brand-light': '#f0f6f4'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#f8faf9] text-gray-800 font-sans min-h-screen pb-20">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-150 px-6 sm:px-12 py-3.5 flex items-center justify-between sticky top-0 z-30">
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-brand/10 text-brand flex items-center justify-center text-lg">
+          <i class="fa-solid fa-leaf"></i>
+        </div>
+        <span class="text-brand text-2xl font-bold tracking-tight">KisanQ</span>
+      </a>
+      <span class="text-xs text-gray-400 hidden sm:inline border-l pl-3 ml-2" data-i18n="headerMonitor">Live Queue Monitor</span>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <!-- Shared Language Toggle -->
+      <div class="flex items-center bg-gray-100 p-0.5 rounded-lg text-xs font-semibold">
+        <button id="lang-en" onclick="setSharedLanguage('en')" class="px-2.5 py-1 rounded-md bg-white text-gray-800 shadow-xs transition-all">EN</button>
+        <button id="lang-hi" onclick="setSharedLanguage('hi')" class="px-2.5 py-1 rounded-md text-gray-500 hover:text-gray-900 transition-all">हिन्दी</button>
+      </div>
+
+      <a href="index.html" class="text-sm font-medium text-gray-600 hover:text-brand flex items-center gap-1.5">
+        <i class="fa-solid fa-arrow-left"></i> <span data-i18n="backDashboard">Dashboard</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <div class="mb-6 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-extrabold text-gray-900" data-i18n="pageTitle">Live Queue & Bay Status</h1>
+        <p class="text-sm text-gray-500 mt-0.5" data-i18n="pageSub">Dadri Procurement Centre • Mandi Gate 2</p>
+      </div>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 animate-pulse">
+        <span class="w-2 h-2 rounded-full bg-emerald-600"></span> <span data-i18n="liveFeed">Live Mandi Feed</span>
+      </span>
+    </div>
+
+    <!-- Active Spotlight -->
+    <div class="bg-brand text-white rounded-2xl p-6 sm:p-8 shadow-sm mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div>
+        <span class="text-xs uppercase tracking-widest text-emerald-200 font-semibold" data-i18n="yourPosition">Your Live Position</span>
+        <div class="flex items-baseline gap-3 mt-1">
+          <span class="text-5xl font-black">#5</span>
+          <span class="text-emerald-100 text-sm"><span data-i18n="inLine">in line</span> (<span data-i18n="tokenLabel">Token</span>: <strong>KQ-1042</strong>)</span>
+        </div>
+        <p class="text-xs text-emerald-100 mt-2"><span data-i18n="assignedBay">Assigned Weighbridge</span>: <strong class="text-white">Bay 3 (Gross Weighing)</strong></p>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/15 flex items-center gap-5">
+        <div>
+          <p class="text-xs text-emerald-200" data-i18n="servingToken">Current Serving Token</p>
+          <p class="text-2xl font-black tracking-wide">KQ-1037</p>
+        </div>
+        <div class="h-10 w-px bg-white/20"></div>
+        <div>
+          <p class="text-xs text-emerald-200" data-i18n="clearanceRate">Avg Bay Clearance</p>
+          <p class="text-2xl font-black">6.5 <span class="text-xs font-normal" data-i18n="minPerVehicle">min/vehicle</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sequence Line -->
+    <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-xs mb-8">
+      <h2 class="text-sm font-bold text-gray-700 uppercase tracking-wider mb-6" data-i18n="sequenceTitle">Queue Sequence for Bay 3</h2>
+      <div class="space-y-4">
+        <div class="flex items-center justify-between p-3.5 rounded-xl bg-amber-50 border border-amber-200">
+          <div class="flex items-center gap-3">
+            <span class="px-2.5 py-1 rounded-md bg-amber-600 text-white font-bold text-xs" data-i18n="nowAtBay">Now At Bay</span>
+            <div>
+              <p class="font-bold text-gray-900 text-sm">KQ-1037 <span class="text-gray-500 font-normal text-xs">(Sukhwinder S.)</span></p>
+              <p class="text-xs text-gray-500" data-i18n="bayCheck1">Gross Weighing & Moisture Analysis</p>
+            </div>
+          </div>
+          <span class="text-xs font-semibold text-amber-700" data-i18n="inProgMsg">In Progress (~2m left)</span>
+        </div>
+
+        <div class="flex items-center justify-between p-3.5 rounded-xl bg-gray-50 border border-gray-100 text-gray-600">
+          <div class="flex items-center gap-3">
+            <span class="px-2.5 py-1 rounded-md bg-gray-200 text-gray-700 font-bold text-xs">#2</span>
+            <p class="font-semibold text-sm">KQ-1038 <span class="text-gray-400 font-normal text-xs">(Tractor • Trolley)</span></p>
+          </div>
+          <span class="text-xs text-gray-500" data-i18n="holdingA">At Inspection Point</span>
+        </div>
+
+        <div class="flex items-center justify-between p-3.5 rounded-xl bg-gray-50 border border-gray-100 text-gray-600">
+          <div class="flex items-center gap-3">
+            <span class="px-2.5 py-1 rounded-md bg-gray-200 text-gray-700 font-bold text-xs">#3</span>
+            <p class="font-semibold text-sm">KQ-1039 <span class="text-gray-400 font-normal text-xs">(Pickup Van)</span></p>
+          </div>
+          <span class="text-xs text-gray-500" data-i18n="holdingB">Mandi Holding Area B</span>
+        </div>
+
+        <!-- Highlighted User Token -->
+        <div class="flex items-center justify-between p-4 rounded-xl bg-brand-light border-2 border-brand text-gray-900 shadow-sm">
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 rounded-md bg-brand text-white font-black text-xs">#5 (<span data-i18n="youLabel">YOU</span>)</span>
+            <div>
+              <p class="font-extrabold text-sm text-brand-dark">KQ-1042 • <span id="queue-user-name">Amratansh Khare</span></p>
+              <p class="text-xs text-brand font-medium" data-i18n="estEntryCall">Estimated entry call: 10:20 AM</p>
+            </div>
+          </div>
+          <span class="px-3 py-1 text-xs font-bold rounded-full bg-brand text-white" data-i18n="yourTurnSoon">Your Turn Soon</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="kisanq-common.js"></script>
+  <script>
+    const queueTranslations = {
+      en: {
+        headerMonitor: "Live Queue Monitor",
+        backDashboard: "Dashboard",
+        pageTitle: "Live Queue & Bay Status",
+        pageSub: "Dadri Procurement Centre • Mandi Gate 2",
+        liveFeed: "Live Mandi Feed",
+        yourPosition: "Your Live Position",
+        inLine: "in line",
+        tokenLabel: "Token",
+        assignedBay: "Assigned Weighbridge",
+        servingToken: "Current Serving Token",
+        clearanceRate: "Avg Bay Clearance",
+        minPerVehicle: "min/vehicle",
+        sequenceTitle: "Queue Sequence for Bay 3",
+        nowAtBay: "Now At Bay",
+        bayCheck1: "Gross Weighing & Moisture Analysis",
+        inProgMsg: "In Progress (~2m left)",
+        holdingA: "At Inspection Point",
+        holdingB: "Mandi Holding Area B",
+        youLabel: "YOU",
+        estEntryCall: "Estimated entry call: 10:20 AM",
+        yourTurnSoon: "Your Turn Soon"
+      },
+      hi: {
+        headerMonitor: "लाइव कतार निगरानी",
+        backDashboard: "डैशबोर्ड",
+        pageTitle: "लाइव कतार एवं धर्मकांटा स्थिति",
+        pageSub: "दादरी खरीद केंद्र • मंडी गेट 2",
+        liveFeed: "लाइव मंडी प्रसारण",
+        yourPosition: "आपकी वर्तमान स्थिति",
+        inLine: "कतार में",
+        tokenLabel: "टोकन",
+        assignedBay: "आवंटित धर्मकांटा",
+        servingToken: "वर्तमान में चालू टोकन",
+        clearanceRate: "औसत निपटान समय",
+        minPerVehicle: "मिनट/वाहन",
+        sequenceTitle: "धर्मकांटा 3 के लिए कतार क्रम",
+        nowAtBay: "वर्तमान में कांटे पर",
+        bayCheck1: "सकल वजन एवं नमी परीक्षण",
+        inProgMsg: "प्रक्रिया जारी (~2 मिनट शेष)",
+        holdingA: "जांच बिंदु पर",
+        holdingB: "मंडी प्रतीक्षालय बी",
+        youLabel: "आप",
+        estEntryCall: "अनुमानित प्रवेश कॉल: 10:20 पूर्वाह्न",
+        yourTurnSoon: "आपकी बारी जल्द है"
+      }
+    };
+
+    window.applyPageLanguage = function(lang) {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (queueTranslations[lang] && queueTranslations[lang][key]) {
+          el.textContent = queueTranslations[lang][key];
+        }
+      });
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      try {
+        const user = JSON.parse(localStorage.getItem('kisanq_user'));
+        if (user && user.name) {
+          document.getElementById('queue-user-name').textContent = user.name;
+        }
+      } catch (e) {}
+    });
+  </script>
+</body>
+</html>

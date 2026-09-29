@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mandi Gate Pass - KisanQ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { brand: '#1b4d3e', 'brand-dark': '#143b2f', 'brand-light': '#f0f6f4' } } }
+    }
+  </script>
+</head>
+<body class="bg-[#f8faf9] text-gray-800 font-sans min-h-screen pb-20">
+
+  <header class="bg-white border-b border-gray-150 px-6 sm:px-12 py-3.5 flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-full bg-brand/10 text-brand flex items-center justify-center text-lg">
+        <i class="fa-solid fa-leaf"></i>
+      </div>
+      <span class="text-brand text-2xl font-bold tracking-tight">KisanQ</span>
+    </a>
+
+    <div class="flex items-center gap-4">
+      <div class="flex items-center bg-gray-100 p-0.5 rounded-lg text-xs font-semibold">
+        <button id="lang-en" onclick="setSharedLanguage('en')" class="px-2.5 py-1 rounded-md bg-white text-gray-800 shadow-xs transition-all">EN</button>
+        <button id="lang-hi" onclick="setSharedLanguage('hi')" class="px-2.5 py-1 rounded-md text-gray-500 hover:text-gray-900 transition-all">हिन्दी</button>
+      </div>
+      <a href="index.html" class="text-sm font-semibold text-brand hover:underline flex items-center gap-1">
+        <i class="fa-solid fa-xmark"></i> <span data-i18n="closePass">Close</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="max-w-md mx-auto px-4 py-8">
+    <div class="bg-white rounded-3xl border border-gray-200 shadow-lg overflow-hidden">
+      <!-- Pass Header -->
+      <div class="bg-brand text-white p-6 text-center">
+        <p class="text-xs uppercase tracking-widest text-emerald-200 font-medium" data-i18n="passHeader">Verified Procurement Pass</p>
+        <h1 class="text-3xl font-extrabold tracking-tight mt-1">KQ-1042</h1>
+        <p class="text-xs text-emerald-100 mt-1" data-i18n="slotTime">Date: 29 Sep 2026 • Slot: Morning (09:00 - 11:00 AM)</p>
+      </div>
+
+      <!-- QR Display -->
+      <div class="p-8 flex flex-col items-center border-b border-dashed border-gray-200">
+        <div class="p-3 bg-white border-2 border-brand/20 rounded-2xl shadow-inner inline-block">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=KISANQ-PASS-KQ-1042-DADRI" 
+               alt="Procurement Pass QR" 
+               class="w-48 h-48 rounded-lg">
+        </div>
+        <p class="text-xs text-gray-400 mt-4 text-center" data-i18n="qrHint">Scan at Mandi Gate Scanner, Moisture Lab & Bay 3 Operator</p>
+      </div>
+
+      <!-- Pass Specifications -->
+      <div class="p-6 bg-gray-50/70 space-y-3 text-xs">
+        <div class="flex justify-between py-1 border-b border-gray-150">
+          <span class="text-gray-500 font-medium" data-i18n="labelFarmer">Farmer Name</span>
+          <span class="font-bold text-gray-900" id="pass-name">Amratansh Khare</span>
+        </div>
+        <div class="flex justify-between py-1 border-b border-gray-150">
+          <span class="text-gray-500 font-medium" data-i18n="labelCommodity">Commodity</span>
+          <span class="font-bold text-gray-900" id="pass-crop">Wheat (Gehun - Sharbati)</span>
+        </div>
+        <div class="flex justify-between py-1 border-b border-gray-150">
+          <span class="text-gray-500 font-medium" data-i18n="labelExpectedLot">Expected Lot Weight</span>
+          <span class="font-bold text-gray-900" id="pass-qty">18 Quintals</span>
+        </div>
+        <div class="flex justify-between py-1 border-b border-gray-150">
+          <span class="text-gray-500 font-medium" data-i18n="labelCentre">Procurement Centre</span>
+          <span class="font-bold text-gray-900" id="pass-mandi">Dadri Center, Greater Noida</span>
+        </div>
+        <div class="flex justify-between py-1">
+          <span class="text-gray-500 font-medium" data-i18n="labelMSP">Govt MSP Rate</span>
+          <span class="font-bold text-emerald-800">₹2,275 / <span data-i18n="quintal">Quintal</span></span>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="p-4 bg-white flex gap-3 border-t border-gray-100">
+        <button onclick="window.print()" class="flex-1 py-3 px-4 rounded-xl border border-gray-300 font-bold text-xs text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2">
+          <i class="fa-solid fa-download"></i> <span data-i18n="btnSaveOffline">Save Offline</span>
+        </button>
+        <button onclick="alert('SMS Sent with QR token link to registered number')" class="flex-1 py-3 px-4 rounded-xl bg-brand text-white font-bold text-xs hover:bg-brand-dark flex items-center justify-center gap-2 shadow-sm">
+          <i class="fa-solid fa-share-nodes"></i> <span data-i18n="btnShareSMS">Share SMS</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script src="kisanq-common.js"></script>
+  <script>
+    const qrTranslations = {
+      en: {
+        closePass: "Close",
+        passHeader: "Verified Procurement Pass",
+        slotTime: "Date: 29 Sep 2026 • Slot: Morning (09:00 - 11:00 AM)",
+        qrHint: "Scan at Mandi Gate Scanner, Moisture Lab & Bay 3 Operator",
+        labelFarmer: "Farmer Name",
+        labelCommodity: "Commodity",
+        labelExpectedLot: "Expected Lot Weight",
+        labelCentre: "Procurement Centre",
+        labelMSP: "Govt MSP Rate",
+        quintal: "Quintal",
+        btnSaveOffline: "Save Offline",
+        btnShareSMS: "Share SMS"
+      },
+      hi: {
+        closePass: "बंद करें",
+        passHeader: "सत्यापित खरीद प्रवेश पास",
+        slotTime: "तारीख: 29 सित. 2026 • स्लॉट: प्रातः (09:00 - 11:00)",
+        qrHint: "मंडी गेट स्कैनर, नमी जांच प्रयोगशाला एवं कांटा 3 ऑपरेटर द्वारा स्कैन करें",
+        labelFarmer: "किसान का नाम",
+        labelCommodity: "फसल (जिंस)",
+        labelExpectedLot: "अनुमानित वजन",
+        labelCentre: "खरीद केंद्र",
+        labelMSP: "सरकारी एमएसपी दर",
+        quintal: "क्विंटल",
+        btnSaveOffline: "ऑफ़लाइन सहेजें",
+        btnShareSMS: "एसएमएस भेजें"
+      }
+    };
+
+    window.applyPageLanguage = function(lang) {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (qrTranslations[lang] && qrTranslations[lang][key]) {
+          el.textContent = qrTranslations[lang][key];
+        }
+      });
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      try {
+        const user = JSON.parse(localStorage.getItem('kisanq_user'));
+        if (user) {
+          if (user.name) document.getElementById('pass-name').textContent = user.name;
+          if (user.crop) document.getElementById('pass-crop').textContent = user.crop;
+          if (user.qty) document.getElementById('pass-qty').textContent = `${user.qty} Quintals`;
+          if (user.mandi) document.getElementById('pass-mandi').textContent = user.mandi;
+        }
+      } catch (e) {}
+    });
+  </script>
+</body>
+</html>
