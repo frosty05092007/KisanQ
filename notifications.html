@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications - KisanQ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { brand: '#1b4d3e', 'brand-dark': '#143b2f', 'brand-light': '#f0f6f4' } } }
+    }
+  </script>
+</head>
+<body class="bg-[#f8faf9] text-gray-800 font-sans antialiased min-h-screen flex flex-col justify-between pb-24">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-150 px-6 sm:px-12 py-3.5 flex items-center justify-between sticky top-0 z-40">
+    <a href="index.html" class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-full bg-brand/10 text-brand flex items-center justify-center text-lg">
+        <i class="fa-solid fa-leaf"></i>
+      </div>
+      <span class="text-brand text-xl font-bold tracking-tight block leading-tight">KisanQ</span>
+    </a>
+    <div class="flex items-center gap-3">
+      <div class="flex items-center bg-gray-100 p-0.5 rounded-lg text-xs font-semibold">
+        <button id="lang-en" onclick="setSharedLanguage('en')" class="px-2.5 py-1 rounded-md bg-white text-gray-800 shadow-xs transition-all">EN</button>
+        <button id="lang-hi" onclick="setSharedLanguage('hi')" class="px-2.5 py-1 rounded-md text-gray-500 hover:text-gray-900 transition-all">हिन्दी</button>
+      </div>
+      <a href="index.html" class="text-xs sm:text-sm font-semibold text-gray-600 hover:text-brand flex items-center gap-1.5">
+        <i class="fa-solid fa-arrow-left text-xs"></i> Dashboard
+      </a>
+    </div>
+  </header>
+
+  <!-- Notification Feed -->
+  <main class="max-w-2xl w-full mx-auto px-4 py-8">
+    <div class="bg-white rounded-3xl border border-gray-200/90 shadow-sm overflow-hidden p-6 sm:p-8 space-y-4">
+      <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+        <div>
+          <h1 class="text-xl font-black text-gray-900">Mandi Notifications</h1>
+          <p class="text-xs text-gray-500 mt-0.5">Real-time alerts for token KQ-1042 and Dadri Procurement Centre</p>
+        </div>
+        <button onclick="document.querySelectorAll('.notif-dot').forEach(d => d.classList.add('hidden'))" class="text-xs font-bold text-brand hover:underline">
+          Mark all as read
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <div class="p-4 rounded-2xl bg-brand-light border border-brand/20 flex items-start gap-3.5">
+          <div class="w-2.5 h-2.5 rounded-full bg-brand mt-1.5 notif-dot"></div>
+          <div>
+            <h3 class="font-bold text-sm text-gray-900">Queue Alert: Bay 3 Call Coming Up</h3>
+            <p class="text-xs text-gray-600 mt-1">Current serving is KQ-1037. Your token KQ-1042 is #5 in sequence.</p>
+            <span class="text-[11px] text-gray-400 mt-1.5 block">15 min ago • Mandi Gate 2</span>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-gray-50 border border-gray-200 flex items-start gap-3.5">
+          <div class="w-2.5 h-2.5 rounded-full bg-brand mt-1.5 notif-dot"></div>
+          <div>
+            <h3 class="font-bold text-sm text-gray-900">Dadri Center: Moisture Testing Open</h3>
+            <p class="text-xs text-gray-600 mt-1">Moisture checking counter cleared. Bring your digital QR pass.</p>
+            <span class="text-[11px] text-gray-400 mt-1.5 block">1 hour ago • Quality Lab</span>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-gray-50 border border-gray-200 flex items-start gap-3.5">
+          <div class="w-2.5 h-2.5 rounded-full bg-gray-300 mt-1.5"></div>
+          <div>
+            <h3 class="font-bold text-sm text-gray-900">DBT Payment Status: Processing</h3>
+            <p class="text-xs text-gray-600 mt-1">Your previous 18 Quintal wheat lot payment of ₹40,950 is in the PFMS bank clearing batch.</p>
+            <span class="text-[11px] text-gray-400 mt-1.5 block">3 hours ago • Direct Bank Transfer</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="kisanq-common.js"></script>
+</body>
+</html>
