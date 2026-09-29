@@ -1,5 +1,5 @@
 /* ==========================================================================
-   kisanq-common.js - Shared Language Sync & Compact Bottom Nav Dock
+   kisanq-common.js - Shared Language Sync, Bottom Dock & Notification Center
    ========================================================================== */
 
 const sharedTranslations = {
@@ -9,7 +9,19 @@ const sharedTranslations = {
     navBook: "Book Slot",
     navQueue: "Queue",
     navQR: "My QR",
-    navProfile: "Profile"
+    navProfile: "Profile",
+    notifTitle: "Mandi Notifications",
+    notifMarkRead: "Mark all as read",
+    notifEmpty: "No unread notifications",
+    notif1Title: "Token KQ-1042 Active",
+    notif1Msg: "Assigned at Gate 2. Current queue position #5 at Bay 3.",
+    notif1Time: "15 min ago",
+    notif2Title: "Moisture Testing Lab Open",
+    notif2Msg: "Wheat lots moisture verification line operating at speed.",
+    notif2Time: "1 hour ago",
+    notif3Title: "DBT Payment Batch Queued",
+    notif3Msg: "Your previous 18 Qtl lot payment of ₹40,950 is processing.",
+    notif3Time: "3 hours ago"
   },
   hi: {
     tagline: "स्मार्ट खरीद, खुशहाल किसान",
@@ -17,11 +29,22 @@ const sharedTranslations = {
     navBook: "स्लॉट बुक",
     navQueue: "कतार",
     navQR: "मेरा क्यूआर",
-    navProfile: "प्रोफ़ाइल"
+    navProfile: "प्रोफ़ाइल",
+    notifTitle: "मंडी सूचनाएं (अलर्ट)",
+    notifMarkRead: "सभी पढ़े हुए चिह्नित करें",
+    notifEmpty: "कोई नई सूचना नहीं है",
+    notif1Title: "टोकन KQ-1042 सक्रिय",
+    notif1Msg: "गेट 2 पर आवंटित। बे 3 पर आपकी कतार स्थिति #5 है।",
+    notif1Time: "15 मिनट पहले",
+    notif2Title: "नमी परीक्षण प्रयोगशाला खुली है",
+    notif2Msg: "गेहूं की फसलों का नमी परीक्षण काउंटर सुचारू रूप से चालू है।",
+    notif2Time: "1 घंटा पहले",
+    notif3Title: "डीबीटी भुगतान प्रक्रिया जारी",
+    notif3Msg: "आपकी 18 क्विंटल फसल का ₹40,950 का भुगतान बैंक को भेजा गया।",
+    notif3Time: "3 घंटे पहले"
   }
 };
 
-// 1. Get or set initial language
 function getActiveLanguage() {
   try {
     return localStorage.getItem('kisanq_lang') || 'en';
@@ -31,7 +54,6 @@ function getActiveLanguage() {
 }
 
 function updateCommonUI(lang) {
-  // Update toggle button active styling if on page
   const enBtn = document.getElementById('lang-en');
   const hiBtn = document.getElementById('lang-hi');
   if (enBtn && hiBtn) {
@@ -44,7 +66,6 @@ function updateCommonUI(lang) {
     }
   }
 
-  // Translate common shared elements
   document.querySelectorAll('[data-i18n-common]').forEach(el => {
     const key = el.getAttribute('data-i18n-common');
     if (sharedTranslations[lang] && sharedTranslations[lang][key]) {
@@ -52,7 +73,8 @@ function updateCommonUI(lang) {
     }
   });
 
-  // Call page-specific setLanguage if declared on the page
+  renderNotificationPanel(lang);
+
   if (typeof window.applyPageLanguage === 'function') {
     window.applyPageLanguage(lang);
   }
@@ -65,7 +87,79 @@ function setSharedLanguage(lang) {
   updateCommonUI(lang);
 }
 
-// 2. Render Compact Bottom Logo Dock (Replaces the SIH Title footer)
+// ================= NOTIFICATION CENTER =================
+function renderNotificationPanel(lang) {
+  let panel = document.getElementById('notif-dropdown');
+  if (!panel) return;
+
+  const t = sharedTranslations[lang];
+  panel.innerHTML = `
+    <div class="p-3.5 border-b border-gray-100 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i class="fa-regular fa-bell text-brand text-sm"></i>
+        <h3 class="font-bold text-xs text-gray-900 uppercase tracking-wider">${t.notifTitle}</h3>
+      </div>
+      <button onclick="markAllNotificationsAsRead()" class="text-[11px] font-semibold text-brand hover:underline">${t.notifMarkRead}</button>
+    </div>
+    <div class="divide-y divide-gray-100 max-h-80 overflow-y-auto" id="notif-items-list">
+      <!-- Item 1 -->
+      <div class="p-3.5 hover:bg-gray-50 transition-colors flex items-start gap-3">
+        <div class="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0 notif-unread-dot"></div>
+        <div>
+          <h4 class="font-bold text-xs text-gray-900">${t.notif1Title}</h4>
+          <p class="text-xs text-gray-500 mt-0.5">${t.notif1Msg}</p>
+          <span class="text-[10px] text-gray-400 mt-1 block">${t.notif1Time}</span>
+        </div>
+      </div>
+      <!-- Item 2 -->
+      <div class="p-3.5 hover:bg-gray-50 transition-colors flex items-start gap-3">
+        <div class="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0 notif-unread-dot"></div>
+        <div>
+          <h4 class="font-bold text-xs text-gray-900">${t.notif2Title}</h4>
+          <p class="text-xs text-gray-500 mt-0.5">${t.notif2Msg}</p>
+          <span class="text-[10px] text-gray-400 mt-1 block">${t.notif2Time}</span>
+        </div>
+      </div>
+      <!-- Item 3 -->
+      <div class="p-3.5 hover:bg-gray-50 transition-colors flex items-start gap-3">
+        <div class="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0 notif-unread-dot"></div>
+        <div>
+          <h4 class="font-bold text-xs text-gray-900">${t.notif3Title}</h4>
+          <p class="text-xs text-gray-500 mt-0.5">${t.notif3Msg}</p>
+          <span class="text-[10px] text-gray-400 mt-1 block">${t.notif3Time}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function toggleNotifications(event) {
+  if (event) event.stopPropagation();
+  let panel = document.getElementById('notif-dropdown');
+  if (panel) {
+    panel.classList.toggle('hidden');
+  }
+}
+
+function markAllNotificationsAsRead() {
+  const badge = document.getElementById('notif-badge-count');
+  if (badge) badge.classList.add('hidden');
+
+  document.querySelectorAll('.notif-unread-dot').forEach(dot => {
+    dot.className = "w-2 h-2 rounded-full bg-gray-200 mt-1.5 shrink-0";
+  });
+}
+
+// Close when clicking outside
+document.addEventListener('click', (e) => {
+  const panel = document.getElementById('notif-dropdown');
+  const btn = document.getElementById('notif-btn');
+  if (panel && !panel.classList.contains('hidden') && !panel.contains(e.target) && !btn.contains(e.target)) {
+    panel.classList.add('hidden');
+  }
+});
+
+// ================= BOTTOM NAVIGATION DOCK =================
 function renderBottomDock() {
   const currentPath = window.location.pathname;
   const pageName = currentPath.substring(currentPath.lastIndexOf('/') + 1) || 'index.html';
@@ -100,7 +194,6 @@ function renderBottomDock() {
   document.body.appendChild(dockContainer);
 }
 
-// Auto init when document is loaded
 document.addEventListener('DOMContentLoaded', () => {
   renderBottomDock();
   updateCommonUI(getActiveLanguage());
