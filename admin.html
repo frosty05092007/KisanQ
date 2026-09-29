@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mandi Operations & Weighbridge Portal - KisanQ Admin</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#1b4d3e',
+            'brand-dark': '#143b2f',
+            'brand-light': '#f0f6f4',
+            'brand-border': '#e2ece7'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#f4f7f5] text-gray-800 font-sans antialiased min-h-screen flex flex-col justify-between pb-24">
+
+  <!-- ================= TOP ADMIN NAVIGATION ================= -->
+  <header class="bg-white border-b border-gray-200 px-6 sm:px-12 py-3 flex items-center justify-between sticky top-0 z-40 shadow-xs">
+    <div class="flex items-center gap-3">
+      <a href="admin.html" class="flex items-center gap-2 group">
+        <div class="w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center text-sm font-bold shadow-xs">
+          <i class="fa-solid fa-scale-balanced"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-brand text-xl font-black tracking-tight block leading-tight">KisanQ</span>
+            <span class="bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-black uppercase px-2 py-0.5 rounded-md">Officer POV</span>
+          </div>
+          <span class="text-[11px] text-gray-500 font-semibold block -mt-0.5">Dadri Procurement Center • Mandi Control Unit</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="flex items-center gap-3 sm:gap-5">
+      <!-- Language Switcher -->
+      <div class="flex items-center bg-gray-100 p-0.5 rounded-lg text-xs font-semibold">
+        <button id="lang-en" onclick="setSharedLanguage('en')" class="px-2.5 py-1 rounded-md bg-white text-gray-800 shadow-xs font-bold transition-all">EN</button>
+        <button id="lang-hi" onclick="setSharedLanguage('hi')" class="px-2.5 py-1 rounded-md text-gray-500 hover:text-gray-900 font-semibold transition-all">हिन्दी</button>
+      </div>
+
+      <!-- Quick Switch to Farmer Portal -->
+      <a href="index.html" class="text-xs font-bold text-brand bg-brand-light border border-brand/20 hover:bg-brand hover:text-white px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5">
+        <i class="fa-solid fa-users"></i>
+        <span data-i18n="switchToFarmer">Farmer Portal</span>
+      </a>
+
+      <!-- Officer Badge -->
+      <div class="flex items-center gap-2 pl-3 border-l border-gray-200">
+        <div class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-xs">
+          OP
+        </div>
+        <div class="hidden sm:block text-left text-xs leading-tight">
+          <p class="font-bold text-gray-900">Dr. S. K. Verma</p>
+          <span class="text-[10px] text-gray-400">Chief Mandi Inspector</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN ADMIN DASHBOARD ================= -->
+  <main class="max-w-7xl w-full mx-auto px-4 sm:px-8 py-6 space-y-6 flex-1">
+
+    <!-- TOP KPI STATS TILES -->
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      
+      <!-- Stat 1 -->
+      <div class="bg-white p-4 sm:p-5 rounded-2xl border border-gray-200 shadow-xs">
+        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block" data-i18n="statTodayVehicles">Vehicles Registered Today</span>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span class="text-2xl sm:text-3xl font-black text-gray-900">142</span>
+          <span class="text-xs font-bold text-emerald-600">+18% vs avg</span>
+        </div>
+        <p class="text-[11px] text-gray-400 mt-1 font-medium">89 cleared • 53 waiting</p>
+      </div>
+
+      <!-- Stat 2 -->
+      <div class="bg-white p-4 sm:p-5 rounded-2xl border border-gray-200 shadow-xs">
+        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block" data-i18n="statProduceProcured">Total Produce Procured</span>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span class="text-2xl sm:text-3xl font-black text-brand">2,840</span>
+          <span class="text-xs font-semibold text-gray-500">Quintals</span>
+        </div>
+        <p class="text-[11px] text-gray-400 mt-1 font-medium">Wheat (Sharbati & Lokwan)</p>
+      </div>
+
+      <!-- Stat 3 -->
+      <div class="bg-white p-4 sm:p-5 rounded-2xl border border-gray-200 shadow-xs">
+        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block" data-i18n="statAvgClearance">Avg Bay Clearance</span>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span class="text-2xl sm:text-3xl font-black text-amber-700">6.2</span>
+          <span class="text-xs font-semibold text-gray-500">min/vehicle</span>
+        </div>
+        <p class="text-[11px] text-emerald-600 mt-1 font-bold">1.8 min faster than target</p>
+      </div>
+
+      <!-- Stat 4 -->
+      <div class="bg-white p-4 sm:p-5 rounded-2xl border border-gray-200 shadow-xs">
+        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block" data-i18n="statDbtDispatched">DBT Payouts Dispatched</span>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span class="text-2xl sm:text-3xl font-black text-gray-900">₹64.6 L</span>
+        </div>
+        <p class="text-[11px] text-emerald-700 mt-1 font-semibold flex items-center gap-1">
+          <i class="fa-solid fa-circle-check text-[10px]"></i> PFMS Auto-Settlement Active
+        </p>
+      </div>
+
+    </section>
+
+    <!-- LIVE BAY CONTROLLER & NEXT CALL ACTION -->
+    <section class="bg-brand text-white rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-emerald-200 text-xs font-semibold mb-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span data-i18n="bayLiveTag">Bay 3 Weighbridge Station (Active Line)</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-black tracking-tight flex items-center gap-3">
+          <span data-i18n="currentServing">Current Token:</span> 
+          <span id="current-serving-token" class="text-amber-300">KQ-1037</span>
+        </h2>
+        <p class="text-xs text-emerald-100 mt-1">
+          Driver: <strong class="text-white">Sukhwinder Singh</strong> • Trolley: UP-14-BT-9182 • Produce: Wheat (18 Qtl)
+        </p>
+      </div>
+
+      <!-- Action Buttons for Mandi Operator -->
+      <div class="flex flex-wrap items-center gap-3">
+        <button type="button" onclick="callNextToken()" class="px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-brand-dark font-extrabold text-xs shadow-md transition-all flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-forward-step text-sm"></i>
+          <span data-i18n="btnCallNext">Call Next In Line</span>
+        </button>
+
+        <button type="button" onclick="openWeightModal('KQ-1037')" class="px-5 py-3 rounded-xl bg-white text-brand hover:bg-emerald-50 font-bold text-xs shadow-md transition-all flex items-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-scale-balanced text-sm"></i>
+          <span data-i18n="btnRecordWeight">Record Weight & Quality</span>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- MAIN INTERACTIVE DATA GRID (LIVE QUEUE QUEUE TABLE) -->
+    <section class="bg-white rounded-3xl border border-gray-200/90 shadow-sm overflow-hidden">
+      
+      <!-- Table Header & Filters -->
+      <div class="p-5 border-b border-gray-150 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h3 class="text-base font-extrabold text-gray-900" data-i18n="tableTitle">Live Gate Queue & Inspection Queue</h3>
+          <p class="text-xs text-gray-500 mt-0.5">Real-time gate pass status for Dadri Procurement Center Gate 2</p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <!-- Filter Search -->
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-gray-400"></i>
+            <input type="text" id="queue-search" oninput="filterTable()" placeholder="Search farmer, token, or vehicle..."
+                   class="pl-8 pr-4 py-1.5 text-xs rounded-xl border border-gray-200 focus:outline-none focus:border-brand w-56 sm:w-64">
+          </div>
+          <!-- QR Scanner Modal Trigger -->
+          <button type="button" onclick="openQRScanner()" class="p-2 rounded-xl bg-brand text-white text-xs font-bold hover:bg-brand-dark transition-all flex items-center gap-1.5 shadow-xs">
+            <i class="fa-solid fa-qrcode"></i>
+            <span class="hidden sm:inline" data-i18n="btnScanPass">Scan Pass</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Table Content -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-gray-50/70 border-b border-gray-150 text-gray-500 uppercase tracking-wider font-bold">
+            <tr>
+              <th class="py-3.5 px-4 sm:px-6">Token</th>
+              <th class="py-3.5 px-4">Farmer Details</th>
+              <th class="py-3.5 px-4">Vehicle & Produce</th>
+              <th class="py-3.5 px-4">Gate Arrival</th>
+              <th class="py-3.5 px-4">Queue Status</th>
+              <th class="py-3.5 px-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="queue-table-body" class="divide-y divide-gray-100 text-gray-700 font-medium">
+            
+            <!-- Row 1 (Current Active) -->
+            <tr class="bg-amber-50/50 hover:bg-amber-50 transition-colors">
+              <td class="py-4 px-4 sm:px-6">
+                <span class="font-extrabold text-sm text-amber-900 block">KQ-1037</span>
+                <span class="text-[10px] text-amber-700 font-bold uppercase">Now at Bay 3</span>
+              </td>
+              <td class="py-4 px-4">
+                <p class="font-bold text-gray-900 text-sm">Sukhwinder Singh</p>
+                <p class="text-[11px] text-gray-500">+91 98112-90123</p>
+              </td>
+              <td class="py-4 px-4">
+                <p class="font-semibold text-gray-900">Wheat (Gehun) • 18 Qtl</p>
+                <p class="text-[11px] text-gray-500">Tractor UP-14-BT-9182</p>
+              </td>
+              <td class="py-4 px-4">
+                <span>08:45 AM</span>
+                <span class="block text-[10px] text-gray-400">Gate 2 Verified</span>
+              </td>
+              <td class="py-4 px-4">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse"></span>
+                  Gross Weighing
+                </span>
+              </td>
+              <td class="py-4 px-4 text-right">
+                <button onclick="openWeightModal('KQ-1037')" class="px-3 py-1.5 rounded-lg bg-brand text-white text-xs font-bold hover:bg-brand-dark transition-all">
+                  Inspect
+                </button>
+              </td>
+            </tr>
+
+            <!-- Row 2 -->
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="py-4 px-4 sm:px-6">
+                <span class="font-extrabold text-sm text-gray-900 block">KQ-1038</span>
+                <span class="text-[10px] text-gray-400 font-semibold">Pos #2</span>
+              </td>
+              <td class="py-4 px-4">
+                <p class="font-bold text-gray-900 text-sm">Ram Avtar Yadav</p>
+                <p class="text-[11px] text-gray-500">+91 97182-44102</p>
+              </td>
+              <td class="py-4 px-4">
+                <p class="font-semibold text-gray-900">Wheat • 24 Qtl</p>
+                <p class="text-[11px] text-gray-500">Tractor UP-14-CA-1102</p>
+              </td>
+              <td class="py-4 px-4">
+                <span>09:02 AM</span>
+                <span class="block text-[10px] text-gray-400">Holding Bay B</span>
+              </td>
+              <td class="py-4 px-4">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                  Ready for Bay
+                </span>
+              </td>
+              <td class="py-4 px-4 text-right">
+                <button onclick="openWeightModal('KQ-1038')" class="px-3 py-1.5 rounded-lg border border-gray-300 hover:bg-gray-100 text-xs font-bold text-gray-700">
+                  Prep
+                </button>
+              </td>
+            </tr>
+
+            <!-- Row 3 (Logged In Farmer: Amratansh Khare / KQ-1042) -->
+            <tr class="hover:bg-gray-50 transition-colors bg-emerald-50/30">
+              <td class="py-4 px-4 sm:px-6">
+                <span class="font-extrabold text-sm text-brand-dark block">KQ-1042</span>
+                <span class="text-[10px] text-brand font-bold">Pos #5 (App Linked)</span>
+              </td>
+              <td class="py-4 px-4">
+                <p class="font-bold text-gray-900 text-sm" id="table-farmer-name">Amratansh Khare</p>
+                <p class="text-[11px] text-gray-500">+91 93197-50704</p>
+              </td>
+              <td class="py-4 px-4">
+                <p class="font-semibold text-gray-900">Wheat (Sharbati) • 18 Qtl</p>
+                <p class="text-[11px] text-gray-500">Tractor Trolley UP-14-XX</p>
+              </td>
+              <td class="py-4 px-4">
+                <span>09:15 AM</span>
+                <span class="block text-[10px] text-gray-400">Gate 2 Verified</span>
+              </td>
+              <td class="py-4 px-4">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-100 text-blue-800">
+                  <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                  In Queue (~32m wait)
+                </span>
+              </td>
+              <td class="py-4 px-4 text-right">
+                <button onclick="openWeightModal('KQ-1042')" class="px-3 py-1.5 rounded-lg border border-brand text-brand hover:bg-brand hover:text-white transition-all text-xs font-bold">
+                  Fast Check
+                </button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= WEIGHING & QUALITY MODAL ================= -->
+  <div id="weight-modal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-gray-200 space-y-4 animate-in fade-in zoom-in-95 duration-150">
+      
+      <div class="flex items-center justify-between pb-3 border-b border-gray-150">
+        <div>
+          <h3 class="font-extrabold text-base text-gray-900 flex items-center gap-2">
+            <i class="fa-solid fa-scale-balanced text-brand"></i>
+            <span>Weighbridge & Quality Lab Entry</span>
+          </h3>
+          <p class="text-xs text-gray-500 mt-0.5">Recording Bay 3 Gross, Tare, and Moisture %</p>
+        </div>
+        <button onclick="closeWeightModal()" class="text-gray-400 hover:text-gray-700 p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Token & Farmer Info Header -->
+      <div class="bg-brand-light p-3.5 rounded-2xl border border-brand/20 flex items-center justify-between text-xs">
+        <div>
+          <span class="text-gray-500 block">Token Number</span>
+          <span id="modal-token-id" class="font-black text-brand-dark text-base">KQ-1037</span>
+        </div>
+        <div class="text-right">
+          <span class="text-gray-500 block">Crop Commodity</span>
+          <span class="font-bold text-gray-900">Wheat (Gehun - Sharbati)</span>
+        </div>
+      </div>
+
+      <!-- Inputs -->
+      <div class="grid grid-cols-2 gap-3 text-xs">
+        <div>
+          <label class="block font-bold text-gray-700 uppercase mb-1">Gross Weight (Kg)</label>
+          <input type="number" id="gross-weight" value="4820" oninput="calculateNet()" class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-300 font-bold text-sm text-gray-950 focus:outline-none focus:border-brand">
+        </div>
+        <div>
+          <label class="block font-bold text-gray-700 uppercase mb-1">Tare (Vehicle Kg)</label>
+          <input type="number" id="tare-weight" value="3020" oninput="calculateNet()" class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-300 font-bold text-sm text-gray-950 focus:outline-none focus:border-brand">
+        </div>
+      </div>
+
+      <!-- Net Weight and MSP Calculation -->
+      <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200 flex items-center justify-between text-xs">
+        <div>
+          <span class="text-gray-500 font-medium">Net Produce Weight</span>
+          <p class="text-base font-black text-gray-900"><span id="net-weight">1800</span> Kg (<span id="net-quintals">18.0</span> Qtl)</p>
+        </div>
+        <div class="text-right">
+          <span class="text-gray-500 font-medium">Calculated MSP (₹2,275/Q)</span>
+          <p class="text-base font-black text-emerald-800" id="total-msp">₹40,950</p>
+        </div>
+      </div>
+
+      <!-- Moisture Analysis -->
+      <div class="space-y-1 text-xs">
+        <div class="flex justify-between items-center font-bold text-gray-700">
+          <span>Moisture Content (%)</span>
+          <span id="moisture-badge" class="px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800">11.4% (FAQ Compliant &lt;12%)</span>
+        </div>
+        <input type="range" id="moisture-slider" min="8" max="16" step="0.1" value="11.4" oninput="updateMoisture(this.value)" class="w-full accent-brand cursor-pointer">
+      </div>
+
+      <!-- Actions -->
+      <div class="pt-3 border-t border-gray-150 flex gap-2">
+        <button type="button" onclick="closeWeightModal()" class="flex-1 py-3 rounded-xl border border-gray-300 font-bold text-xs text-gray-700 hover:bg-gray-50">
+          Cancel
+        </button>
+        <button type="button" onclick="approveAndDispatchDBT()" class="flex-1 py-3 rounded-xl bg-brand hover:bg-brand-dark text-white font-bold text-xs shadow-sm flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-check"></i> Approve & Trigger DBT
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QR SCANNER SIMULATOR MODAL -->
+  <div id="qr-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl border border-gray-200">
+      <div class="w-14 h-14 bg-brand-light text-brand rounded-full flex items-center justify-center text-2xl mx-auto">
+        <i class="fa-solid fa-camera"></i>
+      </div>
+      <div>
+        <h3 class="font-extrabold text-base text-gray-900">Mandi Gate QR Reader</h3>
+        <p class="text-xs text-gray-500 mt-1">Scan farmer's digital gate pass or tap demo verify.</p>
+      </div>
+      <div class="border-2 border-dashed border-brand/40 rounded-2xl p-6 bg-brand-light/30">
+        <i class="fa-solid fa-qrcode text-5xl text-brand animate-pulse"></i>
+        <p class="text-[11px] text-brand-dark font-semibold mt-2">Ready for Gate Scanner Feed...</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="closeQRScanner()" class="flex-1 py-2.5 rounded-xl border border-gray-300 text-xs font-bold text-gray-700">Close</button>
+        <button onclick="simulateScanKQ1042()" class="flex-1 py-2.5 rounded-xl bg-brand text-white text-xs font-bold hover:bg-brand-dark">Demo Scan KQ-1042</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared Footer & Bottom Dock -->
+  <script src="kisanq-common.js"></script>
+
+  <!-- ADMIN LOGIC SCRIPT -->
+  <script>
+    const adminTranslations = {
+      en: {
+        switchToFarmer: "Farmer Portal",
+        statTodayVehicles: "Vehicles Registered Today",
+        statProduceProcured: "Total Produce Procured",
+        statAvgClearance: "Avg Bay Clearance",
+        statDbtDispatched: "DBT Payouts Dispatched",
+        bayLiveTag: "Bay 3 Weighbridge Station (Active Line)",
+        currentServing: "Current Token:",
+        btnCallNext: "Call Next In Line",
+        btnRecordWeight: "Record Weight & Quality",
+        tableTitle: "Live Gate Queue & Inspection Queue",
+        btnScanPass: "Scan Pass"
+      },
+      hi: {
+        switchToFarmer: "किसान पोर्टल",
+        statTodayVehicles: "आज पंजीकृत कुल वाहन",
+        statProduceProcured: "कुल खरीदी गई फसल",
+        statAvgClearance: "औसत कांटा निकासी समय",
+        statDbtDispatched: "कुल डीबीटी भुगतान प्रेषित",
+        bayLiveTag: "कांटा स्टेशन 3 (सक्रिय कतार)",
+        currentServing: "वर्तमान में चालू टोकन:",
+        btnCallNext: "अगला टोकन बुलाएं",
+        btnRecordWeight: "वजन एवं गुणवत्ता दर्ज करें",
+        tableTitle: "लाइव मंडी गेट एवं धर्मकांटा कतार",
+        btnScanPass: "पास स्कैन करें"
+      }
+    };
+
+    window.applyPageLanguage = function(lang) {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (adminTranslations[lang] && adminTranslations[lang][key]) {
+          el.textContent = adminTranslations[lang][key];
+        }
+      });
+    };
+
+    // Calculate Net Weight & MSP live
+    function calculateNet() {
+      const gross = parseFloat(document.getElementById('gross-weight').value) || 0;
+      const tare = parseFloat(document.getElementById('tare-weight').value) || 0;
+      const net = Math.max(0, gross - tare);
+      const quintals = net / 100;
+      const totalMsp = quintals * 2275;
+
+      document.getElementById('net-weight').textContent = net;
+      document.getElementById('net-quintals').textContent = quintals.toFixed(1);
+      document.getElementById('total-msp').textContent = '₹' + Math.round(totalMsp).toLocaleString('en-IN');
+    }
+
+    function updateMoisture(val) {
+      const badge = document.getElementById('moisture-badge');
+      if (val <= 12) {
+        badge.className = "px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800 font-bold";
+        badge.textContent = `${val}% (FAQ Compliant - Govt Accepted)`;
+      } else {
+        badge.className = "px-2 py-0.5 rounded text-[10px] bg-amber-100 text-amber-900 font-bold";
+        badge.textContent = `${val}% (High Moisture - Sun Drying Advised)`;
+      }
+    }
+
+    function callNextToken() {
+      const currentEl = document.getElementById('current-serving-token');
+      if (currentEl.textContent === 'KQ-1037') {
+        currentEl.textContent = 'KQ-1038';
+        alert("Public Audio Announcement Triggered: 'Token KQ-1038 (Ram Avtar Yadav) please proceed to Weighbridge Bay 3.'");
+      } else {
+        currentEl.textContent = 'KQ-1042';
+        alert("Public Audio Announcement Triggered: 'Token KQ-1042 (Amratansh Khare) please proceed to Weighbridge Bay 3.'");
+      }
+    }
+
+    function openWeightModal(tokenId) {
+      document.getElementById('modal-token-id').textContent = tokenId;
+      document.getElementById('weight-modal').classList.remove('hidden');
+      calculateNet();
+    }
+
+    function closeWeightModal() {
+      document.getElementById('weight-modal').classList.add('hidden');
+    }
+
+    function approveAndDispatchDBT() {
+      const token = document.getElementById('modal-token-id').textContent;
+      const msp = document.getElementById('total-msp').textContent;
+      alert(`Produce approved for Token ${token}! Direct Bank Transfer (DBT) batch of ${msp} sent to PFMS.`);
+      closeWeightModal();
+    }
+
+    function openQRScanner() {
+      document.getElementById('qr-modal').classList.remove('hidden');
+    }
+
+    function closeQRScanner() {
+      document.getElementById('qr-modal').classList.add('hidden');
+    }
+
+    function simulateScanKQ1042() {
+      closeQRScanner();
+      openWeightModal('KQ-1042');
+    }
+
+    function filterTable() {
+      const query = document.getElementById('queue-search').value.toLowerCase();
+      const rows = document.querySelectorAll('#queue-table-body tr');
+      rows.forEach(r => {
+        const text = r.textContent.toLowerCase();
+        r.style.display = text.includes(query) ? '' : 'none';
+      });
+    }
+
+    // Read logged-in farmer to populate row 3
+    document.addEventListener("DOMContentLoaded", () => {
+      try {
+        const user = JSON.parse(localStorage.getItem('kisanq_user'));
+        if (user && user.name) {
+          const rowName = document.getElementById('table-farmer-name');
+          if (rowName) rowName.textContent = user.name;
+        }
+      } catch (e) {}
+    });
+  </script>
+</body>
+</html>
