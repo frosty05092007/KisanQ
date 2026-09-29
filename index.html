@@ -34,6 +34,22 @@
       </div>
     </div>
 
+    <!-- Interactive Notification Bell & Dropdown -->
+<div class="relative">
+  <button id="notif-btn" type="button" onclick="toggleNotifications(event)" class="w-9 h-9 rounded-full bg-gray-50 hover:bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-600 transition-colors">
+    <i class="fa-regular fa-bell text-sm"></i>
+  </button>
+  <!-- Red Badge with 3 unread items -->
+  <span id="notif-badge-count" class="absolute -top-1 -right-1 bg-rose-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white pointer-events-none">
+    3
+  </span>
+
+  <!-- Dropdown Menu -->
+  <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-gray-200 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-150">
+    <!-- Populated automatically by kisanq-common.js in English / Hindi -->
+  </div>
+</div>
+    
     <!-- Right Controls -->
     <div class="flex items-center gap-3 sm:gap-5">
       <!-- Shared Language Toggle -->
