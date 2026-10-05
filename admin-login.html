@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mandi Officer & Staff Login - KisanQ Admin</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#1b4d3e',
+            'brand-dark': '#143b2f',
+            'brand-light': '#f0f6f4',
+            'officer-slate': '#1e293b'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#f0f4f2] text-gray-800 font-sans antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- TOP OFFICIAL HEADER -->
+  <header class="bg-white border-b border-gray-200 px-6 sm:px-12 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-xs">
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="flex items-center gap-2.5 group">
+        <div class="w-9 h-9 rounded-xl bg-officer-slate text-amber-400 flex items-center justify-center text-base shadow-sm">
+          <i class="fa-solid fa-scale-balanced"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-brand text-xl font-black tracking-tight leading-none">KisanQ</span>
+            <span class="bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-black uppercase px-2 py-0.5 rounded-md">Officer Portal</span>
+          </div>
+          <span class="text-[11px] text-gray-500 font-semibold block mt-0.5" id="nav-center-sub">Integrated Mandi Procurement System (e-NAM Node)</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="flex items-center gap-3 sm:gap-5">
+      <!-- Language Switcher Pill -->
+      <div class="flex items-center bg-gray-100 p-0.5 rounded-lg text-xs font-semibold">
+        <button id="lang-en" onclick="setLanguage('en')" class="px-2.5 py-1 rounded-md bg-white text-gray-800 shadow-xs font-bold transition-all">EN</button>
+        <button id="lang-hi" onclick="setLanguage('hi')" class="px-2.5 py-1 rounded-md text-gray-500 hover:text-gray-900 font-semibold transition-all">हिन्दी</button>
+      </div>
+
+      <!-- Return to Farmer Portal Link -->
+      <a href="index.html" class="text-xs font-bold text-brand bg-brand-light border border-brand/20 hover:bg-brand hover:text-white px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 shadow-xs">
+        <i class="fa-solid fa-arrow-left text-[11px]"></i>
+        <span data-i18n="switchToFarmer">Farmer Portal</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN AUTH CONTAINER -->
+  <main class="flex-1 flex items-center justify-center px-4 py-8">
+    <div class="w-full max-w-lg bg-white rounded-3xl border border-gray-200/90 shadow-lg p-6 sm:p-9 space-y-6">
+
+      <!-- Official Banner Badge -->
+      <div class="bg-slate-900 text-white rounded-2xl p-4 flex items-center justify-between shadow-xs">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-amber-400 text-lg">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <h1 class="text-sm font-black tracking-wide" data-i18n="portalBanner">Mandi Official Gateway</h1>
+            <p class="text-[11px] text-slate-300 font-medium">Restricted Access • Authorized Procurement Personnel</p>
+          </div>
+        </div>
+        <span class="text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-md">256-Bit SSL</span>
+      </div>
+
+      <!-- Tab Switcher (Staff Credentials vs Biometric/Aadhaar) -->
+      <div class="flex bg-gray-100 p-1 rounded-2xl">
+        <button id="tab-cred-btn" type="button" onclick="switchLoginMode('cred')" class="flex-1 py-2 text-xs font-bold rounded-xl bg-white text-officer-slate shadow-xs transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-id-badge text-xs text-brand"></i>
+          <span data-i18n="tabCred">Staff ID & Password</span>
+        </button>
+        <button id="tab-bio-btn" type="button" onclick="switchLoginMode('bio')" class="flex-1 py-2 text-xs font-semibold rounded-xl text-gray-500 hover:text-gray-900 transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-fingerprint text-xs text-amber-600"></i>
+          <span data-i18n="tabBio">Aadhaar / Biometric</span>
+        </button>
+      </div>
+
+      <!-- ================= MODE 1: STAFF CREDENTIALS ================= -->
+      <div id="cred-mode-container" class="space-y-4">
+        
+        <!-- Mandi Center Selection -->
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1" data-i18n="labelMandiCenter">Designated Procurement Center</label>
+          <div class="relative flex items-center">
+            <i class="fa-solid fa-building-wheat absolute left-3.5 text-gray-400 text-xs"></i>
+            <select id="staff-mandi" class="w-full pl-9 pr-3.5 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-xs font-bold text-gray-900 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20">
+              <option value="Dadri Procurement Center, Greater Noida">Dadri Procurement Center, Greater Noida (Bay 1-4)</option>
+              <option value="Jewar Agricultural Procurement Yard">Jewar Agricultural Procurement Yard</option>
+              <option value="Dankaur Krishi Kendra">Dankaur Krishi Kendra</option>
+              <option value="Bulandshahr Main Grain Mandi">Bulandshahr Main Grain Mandi</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Role / Operator Station -->
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1" data-i18n="labelStationRole">Station Role / Designation</label>
+          <div class="relative flex items-center">
+            <i class="fa-solid fa-user-gear absolute left-3.5 text-gray-400 text-xs"></i>
+            <select id="staff-role" class="w-full pl-9 pr-3.5 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-xs font-bold text-gray-900 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20">
+              <option value="Weighbridge & Gross Scale Operator">Weighbridge & Gross Scale Operator (धर्मकांटा)</option>
+              <option value="Quality & Moisture Testing Chemist">Quality & Moisture Testing Chemist (प्रयोगशाला)</option>
+              <option value="Gate Verification Inspector">Gate Entry Scanner & Logistics (गेट जांच)</option>
+              <option value="Chief Mandi Secretary / PFMS Approver">Chief Mandi Secretary / PFMS Approver (प्रशासक)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Staff / Employee ID -->
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1" data-i18n="labelStaffId">Official Staff / Employee ID</label>
+          <div class="relative flex items-center">
+            <i class="fa-solid fa-id-card absolute left-3.5 text-gray-400 text-xs"></i>
+            <input type="text" id="staff-id" value="MND-UP-24901" placeholder="e.g. MND-UP-24901" required
+                   class="w-full pl-9 pr-4 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-sm font-bold text-gray-950 placeholder-gray-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 uppercase">
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider" data-i18n="labelPassword">Security Password</label>
+            <a href="javascript:void(0)" onclick="alert('Demo Access: Password is auto-filled for evaluation.')" class="text-[11px] font-bold text-brand hover:underline">Forgot?</a>
+          </div>
+          <div class="relative flex items-center">
+            <i class="fa-solid fa-key absolute left-3.5 text-gray-400 text-xs"></i>
+            <input type="password" id="staff-pass" value="KisanQ@Admin2026" required
+                   class="w-full pl-9 pr-10 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-sm font-bold text-gray-950 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20">
+            <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3.5 text-gray-400 hover:text-gray-700">
+              <i class="fa-regular fa-eye" id="pass-eye-icon"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Security Captcha -->
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1" data-i18n="labelCaptcha">Security Verification (Captcha)</label>
+          <div class="flex items-center gap-2">
+            <!-- Dynamic Captcha Box -->
+            <div id="captcha-display" class="px-4 py-2 bg-slate-100 rounded-xl border-2 border-dashed border-gray-300 font-mono text-base font-black tracking-widest text-slate-800 select-none line-through">
+              7K9MP2
+            </div>
+            <button type="button" onclick="refreshCaptcha()" title="Refresh Captcha" class="p-2.5 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors">
+              <i class="fa-solid fa-arrows-rotate text-xs"></i>
+            </button>
+            <input type="text" id="captcha-input" value="7K9MP2" placeholder="Enter code" required
+                   class="flex-1 px-3 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-sm font-bold text-gray-950 uppercase focus:outline-none focus:border-brand">
+          </div>
+          <p id="captcha-error" class="text-xs text-rose-600 font-bold mt-1 hidden"></p>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="button" onclick="executeStaffLogin()" class="w-full py-3.5 bg-brand hover:bg-brand-dark text-white rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 mt-4 cursor-pointer">
+          <i class="fa-solid fa-lock text-xs text-amber-300"></i>
+          <span data-i18n="btnAuthorize">Authorize & Enter Command Center</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+
+      </div>
+
+      <!-- ================= MODE 2: BIOMETRIC / AADHAAR OTP ================= -->
+      <div id="bio-mode-container" class="hidden space-y-4">
+        
+        <div class="p-4 bg-amber-50/70 border border-amber-200 rounded-2xl text-xs space-y-1">
+          <p class="font-bold text-amber-900 flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-info text-amber-600"></i>
+            <span>Field Terminal Biometrics</span>
+          </p>
+          <p class="text-amber-800/80">Connect UIDAI STQC-certified fingerprint or Iris scanner, or use Registered Officer Aadhaar OTP.</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1" data-i18n="labelOfficerAadhaar">Officer Aadhaar Number</label>
+          <div class="relative flex items-center">
+            <i class="fa-solid fa-fingerprint absolute left-3.5 text-gray-400 text-xs"></i>
+            <input type="text" id="officer-aadhaar" value="•••• •••• 9812" placeholder="12-digit Aadhaar"
+                   class="w-full pl-9 pr-4 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-sm font-bold text-gray-950 focus:outline-none focus:border-brand">
+          </div>
+        </div>
+
+        <!-- Fingerprint Scanner Animation Box -->
+        <div class="border-2 border-dashed border-gray-300 rounded-2xl p-6 text-center space-y-2 hover:border-brand/50 transition-colors bg-gray-50/50">
+          <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-3xl text-brand mx-auto shadow-sm border border-gray-200">
+            <i class="fa-solid fa-fingerprint animate-pulse"></i>
+          </div>
+          <p class="text-xs font-bold text-gray-800" data-i18n="bioScanPrompt">Place finger on Mandi USB scanner</p>
+          <span class="inline-block text-[10px] text-emerald-700 font-semibold bg-emerald-100 px-2.5 py-0.5 rounded-full">Device Ready: Mantra MFS100</span>
+        </div>
+
+        <button type="button" onclick="executeBiometricLogin()" class="w-full py-3.5 bg-officer-slate hover:bg-slate-800 text-white rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+          <i class="fa-solid fa-circle-check text-emerald-400"></i>
+          <span data-i18n="btnBioLogin">Simulate Biometric Scan & Login</span>
+        </button>
+
+      </div>
+
+      <!-- Quick Demo Credentials Box for Judges / Evaluators -->
+      <div class="pt-4 border-t border-gray-150">
+        <div class="bg-gray-50 rounded-2xl p-3.5 border border-gray-200 flex items-center justify-between text-xs">
+          <div>
+            <span class="font-bold text-gray-700 block">Evaluator Demo Bypass:</span>
+            <span class="text-gray-500 text-[11px]">Pre-filled with Inspector Dr. S. K. Verma's ID</span>
+          </div>
+          <button onclick="executeStaffLogin()" class="px-3 py-1.5 bg-brand/10 hover:bg-brand text-brand hover:text-white rounded-lg font-bold text-xs transition-colors">
+            1-Click Demo
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- OFFICIAL SYSTEM FOOTER -->
+  <footer class="bg-white border-t border-gray-200 py-3.5 px-6 text-center text-xs text-gray-400">
+    <p>KisanQ e-Procurement System • Smart India Hackathon 2026 • Mandi Control Node Dadri</p>
+  </footer>
+
+  <!-- SCRIPT CONTROLLER -->
+  <script>
+    let currentLang = 'en';
+
+    const translations = {
+      en: {
+        switchToFarmer: "Farmer Portal",
+        portalBanner: "Mandi Official Gateway",
+        tabCred: "Staff ID & Password",
+        tabBio: "Aadhaar / Biometric",
+        labelMandiCenter: "Designated Procurement Center",
+        labelStationRole: "Station Role / Designation",
+        labelStaffId: "Official Staff / Employee ID",
+        labelPassword: "Security Password",
+        labelCaptcha: "Security Verification (Captcha)",
+        btnAuthorize: "Authorize & Enter Command Center",
+        labelOfficerAadhaar: "Officer Aadhaar Number",
+        bioScanPrompt: "Place finger on Mandi USB scanner",
+        btnBioLogin: "Simulate Biometric Scan & Login"
+      },
+      hi: {
+        switchToFarmer: "किसान पोर्टल",
+        portalBanner: "मंडी अधिकारी लॉगिन पोर्टल",
+        tabCred: "कर्मचारी आईडी और पासवर्ड",
+        tabBio: "आधार / बायोमेट्रिक",
+        labelMandiCenter: "आवंटित खरीद मंडी केंद्र",
+        labelStationRole: "पद / कांटा स्टेशन भूमिका",
+        labelStaffId: "आधिकारिक कर्मचारी आईडी",
+        labelPassword: "सुरक्षा पासवर्ड",
+        labelCaptcha: "सुरक्षा सत्यापन (कैप्चा कोड)",
+        btnAuthorize: "सत्यापित करें एवं डैशबोर्ड में प्रवेश करें",
+        labelOfficerAadhaar: "अधिकारी आधार संख्या",
+        bioScanPrompt: "मंडी बायोमेट्रिक स्कैनर पर उंगली रखें",
+        btnBioLogin: "बायोमेट्रिक स्कैन करें और प्रवेश करें"
+      }
+    };
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      const enBtn = document.getElementById('lang-en');
+      const hiBtn = document.getElementById('lang-hi');
+
+      if (lang === 'hi') {
+        hiBtn.className = "px-2.5 py-1 rounded-md bg-white text-gray-800 shadow-xs font-bold transition-all";
+        enBtn.className = "px-2.5 py-1 rounded-md text-gray-500 hover:text-gray-900 font-semibold transition-all";
+        document.getElementById('nav-center-sub').textContent = "एकीकृत मंडी खरीद प्रणाली (ई-नाम नोड)";
+      } else {
+        enBtn.className = "px-2.5 py-1 rounded-md bg-white text-gray-800 shadow-xs font-bold transition-all";
+        hiBtn.className = "px-2.5 py-1 rounded-md text-gray-500 hover:text-gray-900 font-semibold transition-all";
+        document.getElementById('nav-center-sub').textContent = "Integrated Mandi Procurement System (e-NAM Node)";
+      }
+
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+    }
+
+    function switchLoginMode(mode) {
+      const credBtn = document.getElementById('tab-cred-btn');
+      const bioBtn = document.getElementById('tab-bio-btn');
+      const credBox = document.getElementById('cred-mode-container');
+      const bioBox = document.getElementById('bio-mode-container');
+
+      if (mode === 'cred') {
+        credBtn.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-white text-officer-slate shadow-xs transition-all flex items-center justify-center gap-2";
+        bioBtn.className = "flex-1 py-2 text-xs font-semibold rounded-xl text-gray-500 hover:text-gray-900 transition-all flex items-center justify-center gap-2";
+        credBox.classList.remove('hidden');
+        bioBox.classList.add('hidden');
+      } else {
+        bioBtn.className = "flex-1 py-2 text-xs font-bold rounded-xl bg-white text-officer-slate shadow-xs transition-all flex items-center justify-center gap-2";
+        credBtn.className = "flex-1 py-2 text-xs font-semibold rounded-xl text-gray-500 hover:text-gray-900 transition-all flex items-center justify-center gap-2";
+        bioBox.classList.remove('hidden');
+        credBox.classList.add('hidden');
+      }
+    }
+
+    function refreshCaptcha() {
+      const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+      let code = "";
+      for (let i = 0; i < 6; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      document.getElementById('captcha-display').textContent = code;
+      document.getElementById('captcha-input').value = code; // Auto match for smooth demo testing
+    }
+
+    function togglePasswordVisibility() {
+      const passField = document.getElementById('staff-pass');
+      const icon = document.getElementById('pass-eye-icon');
+      if (passField.type === 'password') {
+        passField.type = 'text';
+        icon.className = 'fa-regular fa-eye-slash';
+      } else {
+        passField.type = 'password';
+        icon.className = 'fa-regular fa-eye';
+      }
+    }
+
+    function executeStaffLogin() {
+      const staffId = document.getElementById('staff-id').value.trim();
+      const role = document.getElementById('staff-role').value;
+      const mandi = document.getElementById('staff-mandi').value;
+      const captchaInput = document.getElementById('captcha-input').value.trim().toUpperCase();
+      const captchaDisplay = document.getElementById('captcha-display').textContent.trim();
+      const err = document.getElementById('captcha-error');
+
+      err.classList.add('hidden');
+
+      if (!staffId) {
+        alert("Please enter official Staff ID.");
+        return;
+      }
+
+      if (captchaInput !== captchaDisplay) {
+        err.textContent = "Security captcha mismatch. Please check code.";
+        err.classList.remove('hidden');
+        return;
+      }
+
+      // Save officer session state
+      const officerData = {
+        staffId: staffId,
+        role: role,
+        mandi: mandi,
+        name: "Dr. S. K. Verma",
+        loggedInAt: new Date().toLocaleTimeString()
+      };
+
+      try {
+        localStorage.setItem('kisanq_officer', JSON.stringify(officerData));
+      } catch (e) {}
+
+      // Direct entry to admin command dashboard
+      window.location.href = "admin.html";
+    }
+
+    function executeBiometricLogin() {
+      // Simulate fingerprint matching
+      setTimeout(() => {
+        const officerData = {
+          staffId: "MND-UP-24901",
+          role: "Weighbridge & Gross Scale Operator",
+          mandi: "Dadri Procurement Center, Greater Noida",
+          name: "Dr. S. K. Verma (Biometric Verified)",
+          loggedInAt: new Date().toLocaleTimeString()
+        };
+        try {
+          localStorage.setItem('kisanq_officer', JSON.stringify(officerData));
+        } catch (e) {}
+        window.location.href = "admin.html";
+      }, 500);
+    }
+  </script>
+</body>
+</html>
