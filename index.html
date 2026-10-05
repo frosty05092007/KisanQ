@@ -15,35 +15,35 @@
           colors: {
             brand: '#1b4d3e',
             'brand-dark': '#143b2f',
-            'brand-light': '#f0f6f4'
+            'brand-light': '#f0f6f4',
+            'officer-slate': '#1e293b'
           }
         }
       }
     }
   </script>
 </head>
-<body class="bg-[#f8faf9] text-gray-800 font-sans antialiased min-h-screen flex flex-col justify-between pb-24">
+<body class="bg-[#f4f7f5] text-gray-800 font-sans antialiased min-h-screen flex flex-col justify-between pb-24">
 
-  <!-- ================= TOP NAVIGATION BAR ================= -->
-  <header class="bg-white border-b border-gray-150 px-6 sm:px-12 py-3.5 flex items-center justify-between sticky top-0 z-40">
-    <div class="flex items-center gap-2 group cursor-pointer" onclick="checkAuthAndRender()">
-      <div class="w-8 h-8 rounded-full bg-brand/10 text-brand flex items-center justify-center text-lg group-hover:scale-105 transition-transform">
+  <!-- ================= TOP HEADER ================= -->
+  <header class="bg-white border-b border-gray-150 px-6 sm:px-12 py-3.5 flex items-center justify-between sticky top-0 z-40 shadow-xs">
+    <div class="flex items-center gap-2.5 cursor-pointer" onclick="showGateway()">
+      <div class="w-8 h-8 rounded-full bg-brand/10 text-brand flex items-center justify-center text-lg">
         <i class="fa-solid fa-leaf"></i>
       </div>
       <div>
-        <span class="text-brand text-xl font-bold tracking-tight block leading-tight">KisanQ</span>
-        <span class="text-[11px] text-gray-500 font-medium block -mt-0.5" id="nav-tagline">Smart Procurement, Happy Farmers</span>
+        <span class="text-brand text-xl font-black tracking-tight leading-none block">KisanQ</span>
+        <span class="text-[11px] text-gray-500 font-medium block mt-0.5" id="nav-tagline">Smart Procurement, Happy Farmers</span>
       </div>
     </div>
 
     <!-- Right Controls -->
-    <div class="flex items-center gap-2 sm:gap-4">
-      
-      <!-- 🌟 PERMANENT OFFICER / ADMIN PORTAL LINK IN HEADER -->
-      <a href="admin.html" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold transition-all shadow-xs">
-        <i class="fa-solid fa-scale-balanced text-amber-700"></i>
-        <span class="hidden sm:inline">Officer POV</span>
-      </a>
+    <div class="flex items-center gap-3 sm:gap-4">
+      <!-- Role Switcher Button (Visible when inside a login screen) -->
+      <button id="header-switch-btn" type="button" onclick="showGateway()" class="hidden text-xs font-bold text-gray-600 hover:text-brand bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5">
+        <i class="fa-solid fa-arrows-rotate text-[10px]"></i>
+        <span id="header-switch-txt">Switch Role</span>
+      </button>
 
       <!-- Language Switcher Pill -->
       <div class="flex items-center bg-gray-100 p-0.5 rounded-lg text-xs font-semibold">
@@ -51,26 +51,13 @@
         <button id="lang-hi" onclick="setLanguage('hi')" class="px-2.5 py-1 rounded-md text-gray-500 hover:text-gray-900 font-semibold transition-all">हिन्दी</button>
       </div>
 
-      <!-- User Profile Chip & Log Out (Only shown when farmer is logged in) -->
+      <!-- Farmer Nav Chip (Shown only when farmer is authenticated) -->
       <div id="nav-user-chip" class="hidden flex items-center gap-3">
-        <!-- Notification Bell -->
         <div class="relative cursor-pointer" onclick="toggleNotifications(event)">
           <button id="notif-btn" type="button" class="w-9 h-9 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-100">
             <i class="fa-regular fa-bell text-sm"></i>
           </button>
           <span id="notif-badge-count" class="absolute -top-1 -right-1 bg-rose-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">3</span>
-          
-          <!-- Dropdown -->
-          <div id="notif-dropdown" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-200 z-50 overflow-hidden text-xs">
-            <div class="p-3 bg-gray-50 border-b border-gray-100 flex items-center justify-between font-bold">
-              <span>Mandi Notifications</span>
-              <button onclick="document.getElementById('notif-badge-count').classList.add('hidden')" class="text-brand text-[11px] hover:underline">Mark all read</button>
-            </div>
-            <div class="p-3 space-y-2">
-              <p class="text-gray-800 font-semibold">Token KQ-1042: Position #5 at Bay 3</p>
-              <p class="text-gray-500 text-[11px]">Dadri Center: Moisture check open</p>
-            </div>
-          </div>
         </div>
 
         <a href="profile.html" class="flex items-center gap-2.5 pl-2 sm:pl-3 border-l border-gray-200 hover:opacity-80">
@@ -86,207 +73,347 @@
   </header>
 
 
-  <!-- ================= VIEW 1: AUTH VIEW (LOGIN / REGISTER) ================= -->
-  <main id="auth-view" class="flex-1 flex items-center justify-center px-4 py-8">
-    <div class="w-full max-w-md bg-white rounded-3xl border border-gray-200/90 shadow-sm p-6 sm:p-8">
-
-      <!-- Tab Switcher -->
-      <div class="flex bg-gray-100 p-1 rounded-2xl mb-6">
-        <button id="tab-login-btn" type="button" onclick="switchTab('login')" class="flex-1 py-2 text-xs sm:text-sm font-semibold rounded-xl text-gray-500 hover:text-gray-900 transition-all flex items-center justify-center gap-2">
-          <i class="fa-solid fa-arrow-right-to-bracket text-xs"></i>
-          <span id="tab-login-txt">Farmer Login</span>
-        </button>
-        <button id="tab-register-btn" type="button" onclick="switchTab('register')" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-white text-brand shadow-xs transition-all flex items-center justify-center gap-2">
-          <i class="fa-solid fa-user-plus text-xs"></i>
-          <span id="tab-register-txt">New Registration</span>
-        </button>
+  <!-- ================= VIEW 1: DUAL ROLE GATEWAY (LANDING PAGE) ================= -->
+  <main id="gateway-view" class="flex-1 flex items-center justify-center px-4 py-8">
+    <div class="w-full max-w-2xl bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-10 space-y-8 text-center">
+      
+      <!-- Welcome Intro -->
+      <div>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-brand-light text-brand border border-brand/20 mb-3">
+          <i class="fa-solid fa-wheat-awn"></i>
+          <span id="gate-badge">Unified Agri-Procurement Gateway</span>
+        </span>
+        <h1 class="text-2xl sm:text-4xl font-black text-gray-900 tracking-tight" id="gate-title">
+          Select Your Portal to Continue
+        </h1>
+        <p class="text-xs sm:text-sm text-gray-500 mt-2 max-w-md mx-auto" id="gate-sub">
+          Choose whether you are booking grain unloading tokens as a farmer or operating the procurement weighbridge as mandi staff.
+        </p>
       </div>
 
-      <!-- --- LOGIN FORM --- -->
-      <div id="login-form-container" class="hidden">
-        <div class="mb-5">
-          <h2 class="text-xl font-extrabold text-gray-900" id="login-heading-txt">Welcome to KisanQ</h2>
-          <p class="text-xs text-gray-500 mt-1" id="login-sub-txt">Enter your registered mobile number to receive an instant OTP passcode.</p>
-        </div>
-
-        <div class="space-y-4">
-          <div>
-            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5" id="label-login-phone">Mobile Number</label>
-            <div class="relative flex items-center shadow-xs rounded-xl">
-              <span class="absolute left-3.5 z-10 text-sm font-bold text-gray-700 border-r pr-2.5 border-gray-300 select-none">+91</span>
-              <input 
-                type="tel" 
-                id="login-phone" 
-                maxlength="10"
-                placeholder="98765 43210" 
-                class="w-full pl-16 pr-4 py-3.5 rounded-xl border-2 border-gray-300 bg-white text-base font-bold text-gray-950 placeholder-gray-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all"
-              >
+      <!-- Two Big Options Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 text-left">
+        
+        <!-- OPTION 1: FARMER PORTAL -->
+        <div onclick="selectPortal('farmer')" class="group cursor-pointer p-6 rounded-3xl border-2 border-gray-200 hover:border-brand bg-white hover:bg-[#f3f8f6] transition-all transform hover:-translate-y-1 shadow-xs hover:shadow-md flex flex-col justify-between space-y-5">
+          <div class="space-y-3">
+            <div class="w-14 h-14 rounded-2xl bg-brand text-white flex items-center justify-center text-2xl shadow-inner group-hover:scale-105 transition-transform">
+              <i class="fa-solid fa-wheat-awn"></i>
             </div>
-            <p id="login-error-msg" class="text-xs text-rose-600 font-bold mt-1 hidden"></p>
+            <div>
+              <span class="text-[10px] font-black uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded" id="card-farmer-tag">For Producers & Farmers</span>
+              <h2 class="text-xl font-black text-gray-900 mt-1.5 group-hover:text-brand transition-colors" id="card-farmer-title">Farmer Portal</h2>
+              <p class="text-xs text-gray-500 mt-1 leading-relaxed" id="card-farmer-sub">
+                Book mandi arrival slots, track live tractor queue status, view weighbridge QR passes, and monitor MSP payments.
+              </p>
+            </div>
           </div>
 
-          <!-- OTP Input Field -->
-          <div id="login-otp-section" class="hidden space-y-2 pt-1">
-            <div class="flex items-center justify-between">
-              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">Enter 6-Digit OTP</label>
-              <button type="button" onclick="alert('OTP has been resent to your mobile: 123456')" class="text-xs text-brand font-semibold hover:underline">Resend OTP</button>
+          <div class="flex items-center justify-between pt-3 border-t border-gray-150 text-xs font-bold text-brand">
+            <span id="card-farmer-btn">Enter Farmer Login</span>
+            <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
+          </div>
+        </div>
+
+        <!-- OPTION 2: MANDI OFFICER PORTAL -->
+        <div onclick="selectPortal('officer')" class="group cursor-pointer p-6 rounded-3xl border-2 border-gray-200 hover:border-amber-600 bg-white hover:bg-amber-50/40 transition-all transform hover:-translate-y-1 shadow-xs hover:shadow-md flex flex-col justify-between space-y-5">
+          <div class="space-y-3">
+            <div class="w-14 h-14 rounded-2xl bg-slate-900 text-amber-400 flex items-center justify-center text-2xl shadow-inner group-hover:scale-105 transition-transform">
+              <i class="fa-solid fa-scale-balanced"></i>
             </div>
-            
-            <div class="grid grid-cols-6 gap-2">
-              <input type="text" maxlength="1" class="login-otp text-center py-3 border-2 border-gray-300 bg-white rounded-xl text-xl font-black text-gray-950 focus:outline-none focus:border-brand">
-              <input type="text" maxlength="1" class="login-otp text-center py-3 border-2 border-gray-300 bg-white rounded-xl text-xl font-black text-gray-950 focus:outline-none focus:border-brand">
-              <input type="text" maxlength="1" class="login-otp text-center py-3 border-2 border-gray-300 bg-white rounded-xl text-xl font-black text-gray-950 focus:outline-none focus:border-brand">
-              <input type="text" maxlength="1" class="login-otp text-center py-3 border-2 border-gray-300 bg-white rounded-xl text-xl font-black text-gray-950 focus:outline-none focus:border-brand">
-              <input type="text" maxlength="1" class="login-otp text-center py-3 border-2 border-gray-300 bg-white rounded-xl text-xl font-black text-gray-950 focus:outline-none focus:border-brand">
-              <input type="text" maxlength="1" class="login-otp text-center py-3 border-2 border-gray-300 bg-white rounded-xl text-xl font-black text-gray-950 focus:outline-none focus:border-brand">
+            <div>
+              <span class="text-[10px] font-black uppercase tracking-wider text-amber-900 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded" id="card-officer-tag">Mandi Control Node</span>
+              <h2 class="text-xl font-black text-gray-900 mt-1.5 group-hover:text-amber-800 transition-colors" id="card-officer-title">Mandi Officer Portal</h2>
+              <p class="text-xs text-gray-500 mt-1 leading-relaxed" id="card-officer-sub">
+                Manage weighbridge scales (Bay 1-4), scan arrival QR passes, enter moisture testing % and approve DBT payout batches.
+              </p>
             </div>
-            <p class="text-[11px] text-emerald-700 font-medium flex items-center gap-1 mt-1">
-              <i class="fa-solid fa-shield-halved text-xs"></i>
-              <span>OTP dispatched to your registered mobile (Test OTP: 123456)</span>
-            </p>
           </div>
 
-          <button type="button" id="login-btn" onclick="executeLogin()" class="w-full py-3.5 bg-brand hover:bg-brand-dark text-white rounded-xl font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2 mt-2 cursor-pointer">
-            <span id="login-btn-txt">Get OTP</span>
-            <i class="fa-solid fa-arrow-right text-xs"></i>
-          </button>
+          <div class="flex items-center justify-between pt-3 border-t border-gray-150 text-xs font-bold text-amber-900">
+            <span id="card-officer-btn">Enter Officer Portal</span>
+            <i class="fa-solid fa-arrow-right group-hover:translate-x-1.5 transition-transform"></i>
+          </div>
         </div>
+
       </div>
 
-      <!-- --- REGISTRATION FORM --- -->
-      <div id="register-form-container">
-        <div class="mb-5">
-          <h2 class="text-xl font-extrabold text-gray-900" id="reg-heading-txt">Farmer Enrollment</h2>
-          <p class="text-xs text-gray-500 mt-1" id="reg-sub-txt">Verify your phone number with OTP to link PM-KISAN & e-NAM.</p>
-        </div>
-
-        <div class="space-y-4">
-          <!-- Full Name -->
-          <div>
-            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1" id="label-reg-name">Full Name (as in Aadhaar/Bank)</label>
-            <input type="text" id="reg-name" placeholder="e.g. Amratansh Khare"
-                   class="w-full px-3.5 py-3 rounded-xl border-2 border-gray-300 bg-white text-sm font-bold text-gray-950 placeholder-gray-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20">
-            <p id="reg-name-error" class="text-xs text-rose-600 font-bold mt-1 hidden"></p>
-          </div>
-
-          <!-- Mobile Number -->
-          <div>
-            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1" id="label-reg-phone">Mobile Number</label>
-            <div class="relative flex items-center shadow-xs rounded-xl">
-              <span class="absolute left-3.5 z-10 text-sm font-bold text-gray-700 border-r pr-2.5 border-gray-300 select-none">+91</span>
-              <input 
-                type="tel" 
-                id="reg-phone" 
-                maxlength="10" 
-                placeholder="10-digit mobile number"
-                class="w-full pl-16 pr-4 py-3 rounded-xl border-2 border-gray-300 bg-white text-sm font-bold text-gray-950 placeholder-gray-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
-              >
-            </div>
-            <p id="reg-phone-error" class="text-xs text-rose-600 font-bold mt-1 hidden"></p>
-          </div>
-
-          <!-- OTP Drawer for Registration -->
-          <div id="reg-otp-drawer" class="hidden p-4 bg-emerald-50/80 border-2 border-emerald-400 rounded-2xl space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-emerald-950 uppercase tracking-wider flex items-center gap-1.5">
-                <i class="fa-solid fa-shield-halved text-brand"></i>
-                <span id="otp-verify-heading">Verify Mobile OTP</span>
-              </span>
-              <button type="button" onclick="alert('OTP sent: 123456')" class="text-xs text-brand font-bold hover:underline">Resend</button>
-            </div>
-            
-            <p class="text-xs text-emerald-900">
-              <span id="otp-code-hint">Enter 6-digit code sent to</span> <strong id="reg-otp-target" class="text-gray-900 font-bold">+91</strong>
-            </p>
-
-            <div class="grid grid-cols-6 gap-2">
-              <input type="text" maxlength="1" class="reg-otp text-center py-2.5 border-2 border-gray-300 bg-white rounded-xl text-lg font-black text-gray-950 focus:outline-none focus:border-brand">
-              <input type="text" maxlength="1" class="reg-otp text-center py-2.5 border-2 border-gray-300 bg-white rounded-xl text-lg font-black text-gray-950 focus:outline-none focus:border-brand">
-              <input type="text" maxlength="1" class="reg-otp text-center py-2.5 border-2 border-gray-300 bg-white rounded-xl text-lg font-black text-gray-950 focus:outline-none focus:border-brand">
-              <input type="text" maxlength="1" class="reg-otp text-center py-2.5 border-2 border-gray-300 bg-white rounded-xl text-lg font-black text-gray-950 focus:outline-none focus:border-brand">
-              <input type="text" maxlength="1" class="reg-otp text-center py-2.5 border-2 border-gray-300 bg-white rounded-xl text-lg font-black text-gray-950 focus:outline-none focus:border-brand">
-              <input type="text" maxlength="1" class="reg-otp text-center py-2.5 border-2 border-gray-300 bg-white rounded-xl text-lg font-black text-gray-950 focus:outline-none focus:border-brand">
-            </div>
-
-            <button type="button" onclick="verifyRegOtp()" class="w-full py-2.5 bg-brand hover:bg-brand-dark text-white rounded-xl font-bold text-xs shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-              <i class="fa-solid fa-circle-check"></i>
-              <span id="btn-verify-otp-txt">Confirm & Verify Number</span>
-            </button>
-          </div>
-
-          <!-- Verified Badge -->
-          <div id="phone-verified-pill" class="hidden p-3 bg-emerald-100/90 border border-emerald-300 rounded-xl text-xs text-emerald-900 font-semibold flex items-center justify-between">
-            <span class="flex items-center gap-2">
-              <i class="fa-solid fa-circle-check text-emerald-700 text-sm"></i>
-              <span id="verified-phone-txt">Mobile Number Verified & Linked</span>
-            </span>
-            <span class="text-[10px] uppercase font-bold tracking-wider bg-emerald-700 text-white px-2 py-0.5 rounded">e-KYC OK</span>
-          </div>
-
-          <!-- Secondary Mandi Fields -->
-          <div id="reg-secondary-fields" class="space-y-3.5 hidden pt-1">
-            <div class="grid grid-cols-2 gap-2.5">
-              <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">District</label>
-                <select id="reg-district" class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-xs font-bold text-gray-900 focus:outline-none focus:border-brand">
-                  <option value="Gautam Buddha Nagar">Gautam Buddha Nagar</option>
-                  <option value="Bulandshahr">Bulandshahr</option>
-                  <option value="Ghaziabad">Ghaziabad</option>
-                  <option value="Hapur">Hapur</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Preferred Center</label>
-                <select id="reg-mandi" class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-xs font-bold text-gray-900 focus:outline-none focus:border-brand">
-                  <option value="Dadri Procurement Centre, Greater Noida">Dadri Mandi Centre</option>
-                  <option value="Jewar Procurement Bay">Jewar Procurement Bay</option>
-                  <option value="Dankaur Krishi Kendra">Dankaur Krishi Kendra</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2.5">
-              <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Primary Crop</label>
-                <select id="reg-crop" class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-xs font-bold text-gray-900 focus:outline-none focus:border-brand">
-                  <option value="Wheat (गेंहू)">Wheat (गेंहू)</option>
-                  <option value="Paddy / Rice (धान)">Paddy / Rice (धान)</option>
-                  <option value="Mustard (सरसों)">Mustard (सरसों)</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Est. Lot (Quintals)</label>
-                <input type="number" id="reg-qty" value="18" class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-xs font-bold text-gray-900 focus:outline-none focus:border-brand">
-              </div>
-            </div>
-          </div>
-
-          <!-- Main Registration Action Button -->
-          <button type="button" id="reg-action-btn" onclick="startRegVerification()" class="w-full py-3.5 bg-brand hover:bg-brand-dark text-white rounded-xl font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2 mt-3 cursor-pointer">
-            <span id="reg-action-txt">Verify Mobile & Continue</span>
-            <i class="fa-solid fa-arrow-right text-xs"></i>
-          </button>
-        </div>
-
-        <!-- 🌟 PROMINENT ADMIN / OFFICER LINK AT BOTTOM OF FORM -->
-        <div class="mt-6 pt-5 border-t border-gray-150 text-center">
-          <p class="text-xs text-gray-500">
-            Mandi procurement staff or weighbridge operator?<br>
-            <a href="admin.html" class="font-extrabold text-brand hover:underline inline-flex items-center gap-1.5 mt-1.5 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">
-              <i class="fa-solid fa-scale-balanced text-xs"></i>
-              <span>Login to Officer Portal</span>
-              <i class="fa-solid fa-arrow-right text-[10px]"></i>
-            </a>
-          </p>
-        </div>
-
+      <!-- Bottom Advisory Note -->
+      <div class="pt-4 border-t border-gray-100 text-xs text-gray-400 flex items-center justify-center gap-2">
+        <i class="fa-solid fa-shield-halved text-brand"></i>
+        <span id="gate-footer-hint">Secure National Agriculture Market (e-NAM) Node Architecture</span>
       </div>
 
     </div>
   </main>
 
 
-  <!-- ================= VIEW 2: LOGGED-IN DASHBOARD VIEW ================= -->
+  <!-- ================= VIEW 2: FARMER AUTH SCREEN ================= -->
+  <main id="farmer-auth-view" class="hidden flex-1 flex items-center justify-center px-4 py-8">
+    <div class="w-full max-w-md bg-white rounded-3xl border border-gray-200/90 shadow-sm p-6 sm:p-8 space-y-6">
+
+      <!-- Navigation & Role Switch Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-gray-150 text-xs">
+        <button onclick="showGateway()" class="font-bold text-gray-500 hover:text-brand flex items-center gap-1.5">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i>
+          <span id="btn-back-role">All Portals</span>
+        </button>
+        <span class="font-extrabold text-brand bg-brand-light px-2.5 py-0.5 rounded-full border border-brand/20">Farmer Login</span>
+      </div>
+
+      <!-- Tab Switcher (Login vs Register) -->
+      <div class="flex bg-gray-100 p-1 rounded-2xl">
+        <button id="tab-login-btn" type="button" onclick="switchFarmerTab('login')" class="flex-1 py-2 text-xs sm:text-sm font-semibold rounded-xl text-gray-500 hover:text-gray-900 transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-arrow-right-to-bracket text-xs"></i>
+          <span id="tab-login-txt">Farmer Login</span>
+        </button>
+        <button id="tab-register-btn" type="button" onclick="switchFarmerTab('register')" class="flex-1 py-2 text-xs sm:text-sm font-bold rounded-xl bg-white text-brand shadow-xs transition-all flex items-center justify-center gap-2">
+          <i class="fa-solid fa-user-plus text-xs"></i>
+          <span id="tab-register-txt">New Registration</span>
+        </button>
+      </div>
+
+      <!-- --- FARMER LOGIN FORM --- -->
+      <div id="login-form-container" class="hidden space-y-4">
+        <div>
+          <h2 class="text-xl font-extrabold text-gray-900" id="login-heading-txt">Welcome to KisanQ</h2>
+          <p class="text-xs text-gray-500 mt-1" id="login-sub-txt">Enter your registered mobile number to receive an instant OTP passcode.</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Mobile Number</label>
+          <div class="relative flex items-center shadow-xs rounded-xl">
+            <span class="absolute left-3.5 z-10 text-sm font-bold text-gray-700 border-r pr-2.5 border-gray-300 select-none">+91</span>
+            <input 
+              type="tel" 
+              id="login-phone" 
+              maxlength="10"
+              placeholder="98765 43210" 
+              class="w-full pl-16 pr-4 py-3.5 rounded-xl border-2 border-gray-300 bg-white text-base font-bold text-gray-950 placeholder-gray-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all"
+            >
+          </div>
+          <p id="login-error-msg" class="text-xs text-rose-600 font-bold mt-1 hidden"></p>
+        </div>
+
+        <!-- OTP Input Field -->
+        <div id="login-otp-section" class="hidden space-y-2 pt-1">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">Enter 6-Digit OTP</label>
+            <button type="button" onclick="alert('OTP sent to your mobile: 123456')" class="text-xs text-brand font-semibold hover:underline">Resend OTP</button>
+          </div>
+          
+          <div class="grid grid-cols-6 gap-2">
+            <input type="text" maxlength="1" class="login-otp text-center py-3 border-2 border-gray-300 bg-white rounded-xl text-xl font-black text-gray-950 focus:outline-none focus:border-brand">
+            <input type="text" maxlength="1" class="login-otp text-center py-3 border-2 border-gray-300 bg-white rounded-xl text-xl font-black text-gray-950 focus:outline-none focus:border-brand">
+            <input type="text" maxlength="1" class="login-otp text-center py-3 border-2 border-gray-300 bg-white rounded-xl text-xl font-black text-gray-950 focus:outline-none focus:border-brand">
+            <input type="text" maxlength="1" class="login-otp text-center py-3 border-2 border-gray-300 bg-white rounded-xl text-xl font-black text-gray-950 focus:outline-none focus:border-brand">
+            <input type="text" maxlength="1" class="login-otp text-center py-3 border-2 border-gray-300 bg-white rounded-xl text-xl font-black text-gray-950 focus:outline-none focus:border-brand">
+            <input type="text" maxlength="1" class="login-otp text-center py-3 border-2 border-gray-300 bg-white rounded-xl text-xl font-black text-gray-950 focus:outline-none focus:border-brand">
+          </div>
+          <p class="text-[11px] text-emerald-700 font-medium flex items-center gap-1 mt-1">
+            <i class="fa-solid fa-shield-halved text-xs"></i>
+            <span>OTP sent to mobile (Demo OTP: 123456)</span>
+          </p>
+        </div>
+
+        <button type="button" id="login-btn" onclick="executeFarmerLogin()" class="w-full py-3.5 bg-brand hover:bg-brand-dark text-white rounded-xl font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
+          <span id="login-btn-txt">Get OTP</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </div>
+
+      <!-- --- FARMER REGISTRATION FORM --- -->
+      <div id="register-form-container" class="space-y-4">
+        <div>
+          <h2 class="text-xl font-extrabold text-gray-900" id="reg-heading-txt">Farmer Enrollment</h2>
+          <p class="text-xs text-gray-500 mt-1" id="reg-sub-txt">Verify your phone number with OTP to link PM-KISAN & e-NAM.</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1" id="label-reg-name">Full Name (as in Aadhaar/Bank)</label>
+          <input type="text" id="reg-name" placeholder="e.g. Amratansh Khare"
+                 class="w-full px-3.5 py-3 rounded-xl border-2 border-gray-300 bg-white text-sm font-bold text-gray-950 placeholder-gray-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20">
+          <p id="reg-name-error" class="text-xs text-rose-600 font-bold mt-1 hidden"></p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1" id="label-reg-phone">Mobile Number</label>
+          <div class="relative flex items-center shadow-xs rounded-xl">
+            <span class="absolute left-3.5 z-10 text-sm font-bold text-gray-700 border-r pr-2.5 border-gray-300 select-none">+91</span>
+            <input 
+              type="tel" 
+              id="reg-phone" 
+              maxlength="10" 
+              placeholder="10-digit mobile number"
+              class="w-full pl-16 pr-4 py-3 rounded-xl border-2 border-gray-300 bg-white text-sm font-bold text-gray-950 placeholder-gray-400 focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+            >
+          </div>
+          <p id="reg-phone-error" class="text-xs text-rose-600 font-bold mt-1 hidden"></p>
+        </div>
+
+        <!-- OTP Drawer -->
+        <div id="reg-otp-drawer" class="hidden p-4 bg-emerald-50/80 border-2 border-emerald-400 rounded-2xl space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-emerald-950 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-shield-halved text-brand"></i>
+              <span id="otp-verify-heading">Verify Mobile OTP</span>
+            </span>
+            <button type="button" onclick="alert('OTP sent: 123456')" class="text-xs text-brand font-bold hover:underline">Resend</button>
+          </div>
+          
+          <p class="text-xs text-emerald-900">
+            <span>Enter 6-digit code sent to</span> <strong id="reg-otp-target" class="text-gray-900 font-bold">+91</strong>
+          </p>
+
+          <div class="grid grid-cols-6 gap-2">
+            <input type="text" maxlength="1" class="reg-otp text-center py-2.5 border-2 border-gray-300 bg-white rounded-xl text-lg font-black text-gray-950 focus:outline-none focus:border-brand">
+            <input type="text" maxlength="1" class="reg-otp text-center py-2.5 border-2 border-gray-300 bg-white rounded-xl text-lg font-black text-gray-950 focus:outline-none focus:border-brand">
+            <input type="text" maxlength="1" class="reg-otp text-center py-2.5 border-2 border-gray-300 bg-white rounded-xl text-lg font-black text-gray-950 focus:outline-none focus:border-brand">
+            <input type="text" maxlength="1" class="reg-otp text-center py-2.5 border-2 border-gray-300 bg-white rounded-xl text-lg font-black text-gray-950 focus:outline-none focus:border-brand">
+            <input type="text" maxlength="1" class="reg-otp text-center py-2.5 border-2 border-gray-300 bg-white rounded-xl text-lg font-black text-gray-950 focus:outline-none focus:border-brand">
+            <input type="text" maxlength="1" class="reg-otp text-center py-2.5 border-2 border-gray-300 bg-white rounded-xl text-lg font-black text-gray-950 focus:outline-none focus:border-brand">
+          </div>
+
+          <button type="button" onclick="verifyFarmerRegOtp()" class="w-full py-2.5 bg-brand hover:bg-brand-dark text-white rounded-xl font-bold text-xs shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Confirm & Verify Number</span>
+          </button>
+        </div>
+
+        <!-- Verified Badge -->
+        <div id="phone-verified-pill" class="hidden p-3 bg-emerald-100/90 border border-emerald-300 rounded-xl text-xs text-emerald-900 font-semibold flex items-center justify-between">
+          <span class="flex items-center gap-2">
+            <i class="fa-solid fa-circle-check text-emerald-700 text-sm"></i>
+            <span>Mobile Number Verified & Linked</span>
+          </span>
+          <span class="text-[10px] uppercase font-bold tracking-wider bg-emerald-700 text-white px-2 py-0.5 rounded">e-KYC OK</span>
+        </div>
+
+        <!-- Secondary Mandi Fields -->
+        <div id="reg-secondary-fields" class="space-y-3.5 hidden pt-1">
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">District</label>
+              <select id="reg-district" class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-xs font-bold text-gray-900 focus:outline-none focus:border-brand">
+                <option value="Gautam Buddha Nagar">Gautam Buddha Nagar</option>
+                <option value="Bulandshahr">Bulandshahr</option>
+                <option value="Ghaziabad">Ghaziabad</option>
+                <option value="Hapur">Hapur</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Preferred Center</label>
+              <select id="reg-mandi" class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-xs font-bold text-gray-900 focus:outline-none focus:border-brand">
+                <option value="Dadri Procurement Centre, Greater Noida">Dadri Mandi Centre</option>
+                <option value="Jewar Procurement Bay">Jewar Procurement Bay</option>
+                <option value="Dankaur Krishi Kendra">Dankaur Krishi Kendra</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Primary Crop</label>
+              <select id="reg-crop" class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-xs font-bold text-gray-900 focus:outline-none focus:border-brand">
+                <option value="Wheat (गेंहू)">Wheat (गेंहू)</option>
+                <option value="Paddy / Rice (धान)">Paddy / Rice (धान)</option>
+                <option value="Mustard (सरसों)">Mustard (सरसों)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Est. Lot (Quintals)</label>
+              <input type="number" id="reg-qty" value="18" class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-xs font-bold text-gray-900 focus:outline-none focus:border-brand">
+            </div>
+          </div>
+        </div>
+
+        <button type="button" id="reg-action-btn" onclick="startFarmerRegVerification()" class="w-full py-3.5 bg-brand hover:bg-brand-dark text-white rounded-xl font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2 mt-3 cursor-pointer">
+          <span id="reg-action-txt">Verify Mobile & Continue</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+
+  <!-- ================= VIEW 3: MANDI OFFICER AUTH SCREEN ================= -->
+  <main id="officer-auth-view" class="hidden flex-1 flex items-center justify-center px-4 py-8">
+    <div class="w-full max-w-md bg-white rounded-3xl border border-gray-200/90 shadow-md p-6 sm:p-8 space-y-5">
+      
+      <!-- Back to Roles Bar -->
+      <div class="flex items-center justify-between pb-3 border-b border-gray-150 text-xs">
+        <button onclick="showGateway()" class="font-bold text-gray-500 hover:text-amber-800 flex items-center gap-1.5">
+          <i class="fa-solid fa-chevron-left text-[10px]"></i>
+          <span>All Portals</span>
+        </button>
+        <span class="font-extrabold text-amber-900 bg-amber-50 border border-amber-300 px-2.5 py-0.5 rounded-full">Officer POV</span>
+      </div>
+
+      <!-- Officer Badge -->
+      <div class="bg-slate-900 text-white rounded-2xl p-4 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-amber-400 text-lg">
+          <i class="fa-solid fa-scale-balanced"></i>
+        </div>
+        <div>
+          <h2 class="text-sm font-black tracking-wide">Mandi Staff & Inspector Login</h2>
+          <p class="text-[11px] text-slate-300">Authorized Personnel • Dadri Center Node</p>
+        </div>
+      </div>
+
+      <div class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Mandi Procurement Station</label>
+          <select id="staff-mandi" class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-xs font-bold text-gray-900 focus:outline-none focus:border-amber-600">
+            <option value="Dadri Procurement Center, Greater Noida">Dadri Procurement Center, Greater Noida (Bay 1-4)</option>
+            <option value="Jewar Agricultural Yard">Jewar Agricultural Yard</option>
+            <option value="Dankaur Krishi Kendra">Dankaur Krishi Kendra</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Station Role / Designation</label>
+          <select id="staff-role" class="w-full px-3 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-xs font-bold text-gray-900 focus:outline-none focus:border-amber-600">
+            <option value="Weighbridge & Gross Scale Operator">Weighbridge & Gross Scale Operator (धर्मकांटा)</option>
+            <option value="Quality & Moisture Testing Chemist">Quality & Moisture Chemist (प्रयोगशाला)</option>
+            <option value="Gate Verification Inspector">Gate Entry Scanner & Logistics (गेट जांच)</option>
+            <option value="Chief Mandi Secretary / PFMS Approver">Chief Mandi Secretary / PFMS Approver</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Official Employee ID</label>
+          <input type="text" id="staff-id" value="MND-UP-24901" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-sm font-bold text-gray-950 uppercase focus:outline-none focus:border-amber-600">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Security Password</label>
+          <input type="password" id="staff-pass" value="KisanQ@2026" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-gray-300 bg-white text-sm font-bold text-gray-950 focus:outline-none focus:border-amber-600">
+        </div>
+
+        <!-- Captcha -->
+        <div>
+          <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Security Captcha</label>
+          <div class="flex items-center gap-2">
+            <div id="captcha-display" class="px-4 py-2 bg-slate-100 rounded-xl border-2 border-dashed border-gray-300 font-mono text-base font-black tracking-widest text-slate-800 select-none line-through">
+              7K9MP2
+            </div>
+            <input type="text" id="captcha-input" value="7K9MP2" class="flex-1 px-3 py-2 rounded-xl border-2 border-gray-300 bg-white text-sm font-bold text-gray-950 uppercase focus:outline-none focus:border-amber-600">
+          </div>
+        </div>
+
+        <button type="button" onclick="executeOfficerLogin()" class="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer mt-2">
+          <i class="fa-solid fa-lock text-amber-400"></i>
+          <span>Authorize & Enter Admin Center</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+
+  <!-- ================= VIEW 4: AUTHENTICATED FARMER DASHBOARD ================= -->
   <main id="dashboard-view" class="hidden max-w-6xl w-full mx-auto px-4 sm:px-8 py-6 space-y-6 flex-1">
     <div id="mandi-advisory" class="flex items-center justify-between bg-amber-50/80 border border-amber-200/80 px-4 py-2.5 rounded-xl text-xs text-amber-900 shadow-xs">
       <div class="flex items-center gap-2.5">
@@ -480,7 +607,7 @@
   </main>
 
   <!-- ================= COMPACT FLOATING DOCK ================= -->
-  <div class="fixed bottom-3 left-1/2 -translate-x-1/2 z-50 bg-white/95 backdrop-blur-md border border-gray-200 shadow-lg rounded-2xl px-3 py-1.5 flex items-center gap-1.5 sm:gap-3 transition-all">
+  <div id="bottom-dock" class="fixed bottom-3 left-1/2 -translate-x-1/2 z-50 bg-white/95 backdrop-blur-md border border-gray-200 shadow-lg rounded-2xl px-3 py-1.5 flex items-center gap-1.5 sm:gap-3 transition-all">
     <a href="index.html" title="Home" class="w-10 h-10 rounded-xl bg-brand text-white flex items-center justify-center text-sm shadow-xs transition-transform transform scale-105">
       <i class="fa-solid fa-house"></i>
     </a>
@@ -496,34 +623,63 @@
     <a href="profile.html" title="Profile" class="w-10 h-10 rounded-xl text-gray-500 hover:text-brand hover:bg-gray-100 flex items-center justify-center text-sm">
       <i class="fa-regular fa-user"></i>
     </a>
-    <!-- 🌟 OFFICER LOGO IN DOCK -->
     <a href="admin.html" title="Officer Portal" class="w-10 h-10 rounded-xl text-amber-700 bg-amber-50 hover:bg-amber-100 flex items-center justify-center text-sm border border-amber-200">
       <i class="fa-solid fa-scale-balanced"></i>
     </a>
   </div>
 
-  <!-- ================= SCRIPT LOGIC ================= -->
+  <!-- ================= MASTER CONTROLLER SCRIPT ================= -->
   <script>
     let currentLanguage = 'en';
     let loginOtpShown = false;
     let isPhoneVerified = false;
 
-    function checkAuthAndRender() {
-      let user = null;
-      try {
-        const raw = localStorage.getItem('kisanq_user');
-        if (raw) user = JSON.parse(raw);
-      } catch (e) {}
+    // 1. Initial State: Gateway Selector vs Authenticated Dashboard
+    function initPortal() {
+      const savedUser = localStorage.getItem('kisanq_user');
+      if (savedUser) {
+        // Farmer is already logged in -> Go straight to dashboard
+        showDashboard(JSON.parse(savedUser));
+      } else {
+        // Show Dual Options Landing
+        showGateway();
+      }
+    }
 
-      const authView = document.getElementById('auth-view');
-      const dashboardView = document.getElementById('dashboard-view');
-      const navChip = document.getElementById('nav-user-chip');
+    // Show Selection Screen (Gateway)
+    function showGateway() {
+      document.getElementById('gateway-view').classList.remove('hidden');
+      document.getElementById('farmer-auth-view').classList.add('hidden');
+      document.getElementById('officer-auth-view').classList.add('hidden');
+      document.getElementById('dashboard-view').classList.add('hidden');
+      document.getElementById('header-switch-btn').classList.add('hidden');
+      document.getElementById('nav-user-chip').classList.add('hidden');
+    }
+
+    // Select Role Option
+    function selectPortal(role) {
+      document.getElementById('gateway-view').classList.add('hidden');
+      document.getElementById('header-switch-btn').classList.remove('hidden');
+
+      if (role === 'farmer') {
+        document.getElementById('farmer-auth-view').classList.remove('hidden');
+        document.getElementById('officer-auth-view').classList.add('hidden');
+      } else if (role === 'officer') {
+        document.getElementById('officer-auth-view').classList.remove('hidden');
+        document.getElementById('farmer-auth-view').classList.add('hidden');
+      }
+    }
+
+    // Show Dashboard
+    function showDashboard(user) {
+      document.getElementById('gateway-view').classList.add('hidden');
+      document.getElementById('farmer-auth-view').classList.add('hidden');
+      document.getElementById('officer-auth-view').classList.add('hidden');
+      document.getElementById('dashboard-view').classList.remove('hidden');
+      document.getElementById('header-switch-btn').classList.add('hidden');
+      document.getElementById('nav-user-chip').classList.remove('hidden');
 
       if (user && user.name) {
-        authView.classList.add('hidden');
-        dashboardView.classList.remove('hidden');
-        navChip.classList.remove('hidden');
-
         document.getElementById('nav-name').textContent = user.name;
         document.getElementById('nav-initials').textContent = user.initials || "AK";
         document.getElementById('farmer-display-name').textContent = user.name;
@@ -531,14 +687,11 @@
         if (user.crop && user.qty) {
           document.getElementById('farmer-last-lot').textContent = `${user.crop} • ${user.qty} quintal`;
         }
-      } else {
-        authView.classList.remove('hidden');
-        dashboardView.classList.add('hidden');
-        navChip.classList.add('hidden');
       }
     }
 
-    function switchTab(tab) {
+    // Farmer Tab Switcher (Login vs Register)
+    function switchFarmerTab(tab) {
       const loginTab = document.getElementById('tab-login-btn');
       const regTab = document.getElementById('tab-register-btn');
       const loginForm = document.getElementById('login-form-container');
@@ -557,8 +710,8 @@
       }
     }
 
-    // Step 1: Verify Phone Number
-    function startRegVerification() {
+    // Farmer Verification Flow
+    function startFarmerRegVerification() {
       const nameInput = document.getElementById('reg-name');
       const phoneInput = document.getElementById('reg-phone');
       const nameErr = document.getElementById('reg-name-error');
@@ -595,8 +748,7 @@
       if (firstOtp) firstOtp.focus();
     }
 
-    // Step 2: Confirm OTP
-    function verifyRegOtp() {
+    function verifyFarmerRegOtp() {
       isPhoneVerified = true;
       document.getElementById('reg-otp-drawer').classList.add('hidden');
       document.getElementById('phone-verified-pill').classList.remove('hidden');
@@ -605,11 +757,10 @@
       const btn = document.getElementById('reg-action-btn');
       document.getElementById('reg-action-txt').textContent = currentLanguage === 'hi' ? "पंजीकरण पूरा करें और प्रवेश करें" : "Complete Registration & Enter";
       btn.classList.remove('hidden');
-      btn.onclick = finishRegistration;
+      btn.onclick = finishFarmerRegistration;
     }
 
-    // Step 3: Complete & Save
-    function finishRegistration() {
+    function finishFarmerRegistration() {
       const name = document.getElementById('reg-name').value.trim() || "Amratansh Khare";
       const phone = document.getElementById('reg-phone').value.trim().replace(/\D/g, '') || "9319750704";
       const district = document.getElementById('reg-district').value;
@@ -640,10 +791,10 @@
         localStorage.setItem('kisanq_user', JSON.stringify(farmerData));
       } catch (e) {}
 
-      checkAuthAndRender();
+      showDashboard(farmerData);
     }
 
-    function executeLogin() {
+    function executeFarmerLogin() {
       const phoneInput = document.getElementById('login-phone');
       const err = document.getElementById('login-error-msg');
       err.classList.add('hidden');
@@ -678,8 +829,29 @@
         try {
           localStorage.setItem('kisanq_user', JSON.stringify(user));
         } catch (e) {}
-        checkAuthAndRender();
+        showDashboard(user);
       }
+    }
+
+    // Officer Auth Execution
+    function executeOfficerLogin() {
+      const staffId = document.getElementById('staff-id').value.trim();
+      const role = document.getElementById('staff-role').value;
+      const mandi = document.getElementById('staff-mandi').value;
+
+      const officer = {
+        staffId: staffId,
+        role: role,
+        mandi: mandi,
+        name: "Dr. S. K. Verma",
+        loggedInAt: new Date().toLocaleTimeString()
+      };
+
+      try {
+        localStorage.setItem('kisanq_officer', JSON.stringify(officer));
+      } catch (e) {}
+
+      window.location.href = "admin.html";
     }
 
     function logoutFarmer() {
@@ -688,10 +860,11 @@
         try { localStorage.removeItem('kisanq_user'); } catch (e) {}
         loginOtpShown = false;
         isPhoneVerified = false;
-        checkAuthAndRender();
+        showGateway();
       }
     }
 
+    // Auto Advance OTP
     function setupOtpJump(selector) {
       const inputs = document.querySelectorAll(selector);
       inputs.forEach((input, idx) => {
@@ -711,6 +884,7 @@
       if (panel) panel.classList.toggle('hidden');
     }
 
+    // Language Toggle
     function setLanguage(lang) {
       currentLanguage = lang;
       const enBtn = document.getElementById('lang-en');
@@ -720,27 +894,31 @@
         hiBtn.className = "px-2.5 py-1 rounded-md bg-white text-gray-800 shadow-xs font-bold transition-all";
         enBtn.className = "px-2.5 py-1 rounded-md text-gray-500 hover:text-gray-900 font-semibold transition-all";
         document.getElementById('nav-tagline').textContent = "स्मार्ट खरीद, खुशहाल किसान";
-        document.getElementById('salutation-txt').textContent = "नमस्ते";
-        document.getElementById('tab-login-txt').textContent = "किसान लॉगिन";
-        document.getElementById('tab-register-txt').textContent = "नया पंजीकरण";
-        document.getElementById('reg-heading-txt').textContent = "नया किसान पंजीकरण";
-        document.getElementById('reg-sub-txt').textContent = "पीएम-किसान और ई-नाम को जोड़ने के लिए ओटीपी से मोबाइल सत्यापित करें।";
-        document.getElementById('reg-action-txt').textContent = isPhoneVerified ? "पंजीकरण पूरा करें और प्रवेश करें" : "मोबाइल सत्यापित करें और आगे बढ़ें";
+        document.getElementById('gate-title').textContent = "आगे बढ़ने के लिए अपना पोर्टल चुनें";
+        document.getElementById('gate-sub').textContent = "चुनें कि क्या आप किसान के रूप में टोकन बुक कर रहे हैं या मंडी कर्मचारी के रूप में कांटा संचालित कर रहे हैं।";
+        document.getElementById('card-farmer-title').textContent = "किसान पोर्टल";
+        document.getElementById('card-officer-title').textContent = "मंडी अधिकारी पोर्टल";
+        document.getElementById('card-farmer-btn').textContent = "किसान लॉगिन में प्रवेश करें";
+        document.getElementById('card-officer-btn').textContent = "अधिकारी लॉगिन में प्रवेश करें";
+        document.getElementById('header-switch-txt').textContent = "भूमिका बदलें";
+        document.getElementById('btn-back-role').textContent = "सभी पोर्टल";
       } else {
         enBtn.className = "px-2.5 py-1 rounded-md bg-white text-gray-800 shadow-xs font-bold transition-all";
         hiBtn.className = "px-2.5 py-1 rounded-md text-gray-500 hover:text-gray-900 font-semibold transition-all";
         document.getElementById('nav-tagline').textContent = "Smart Procurement, Happy Farmers";
-        document.getElementById('salutation-txt').textContent = "Hello";
-        document.getElementById('tab-login-txt').textContent = "Farmer Login";
-        document.getElementById('tab-register-txt').textContent = "New Registration";
-        document.getElementById('reg-heading-txt').textContent = "Farmer Enrollment";
-        document.getElementById('reg-sub-txt').textContent = "Verify phone number with OTP to link PM-KISAN & e-NAM.";
-        document.getElementById('reg-action-txt').textContent = isPhoneVerified ? "Complete Registration & Enter" : "Verify Mobile & Continue";
+        document.getElementById('gate-title').textContent = "Select Your Portal to Continue";
+        document.getElementById('gate-sub').textContent = "Choose whether you are booking grain unloading tokens as a farmer or operating the procurement weighbridge as mandi staff.";
+        document.getElementById('card-farmer-title').textContent = "Farmer Portal";
+        document.getElementById('card-officer-title').textContent = "Mandi Officer Portal";
+        document.getElementById('card-farmer-btn').textContent = "Enter Farmer Login";
+        document.getElementById('card-officer-btn').textContent = "Enter Officer Portal";
+        document.getElementById('header-switch-txt').textContent = "Switch Role";
+        document.getElementById('btn-back-role').textContent = "All Portals";
       }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      checkAuthAndRender();
+      initPortal();
       setupOtpJump('.login-otp');
       setupOtpJump('.reg-otp');
     });
